@@ -8,6 +8,8 @@ import lombok.extern.java.Log;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter @Setter
@@ -35,4 +37,27 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
+
+    /*
+        예약 잡은 횟수를 확인하는 로직
+     */
+    public int getReservationNumber() {
+        int count = 0;
+        for (Reservation reserved : reservations) {
+            if (reserved.getStatus() == ReservationStatus.RESERVE) {
+                count += 1;
+            }
+        }
+        return count;
+    }
+
+    public List<String> getReservationRoomName() {
+        List<String> result = new ArrayList<>();
+        for (Reservation reserved : reservations){
+            if (reserved.getStatus() == ReservationStatus.RESERVE) {
+                result.add(reserved.getChatRoomName());
+            }
+        }
+        return result;
+    }
 }

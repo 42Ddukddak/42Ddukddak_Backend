@@ -19,4 +19,5 @@ public class Admin {
     private Long bannedId;
 
     private Long timer;
+
 }
