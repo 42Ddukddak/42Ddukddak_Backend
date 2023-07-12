@@ -28,7 +28,7 @@ public class ReservationService {
         User user = chatTable.getUser();
         PrivateChatRoom privateChatRoom = chatTable.getPrivateChatRoom();
         Reservation reservation = Reservation.createReservation(user, privateChatRoom.getRoomName());
-
+        reservationRepository.save(reservation);
         return reservation.getId();
     }
 
