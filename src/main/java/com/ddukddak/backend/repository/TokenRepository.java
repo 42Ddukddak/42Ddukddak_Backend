@@ -15,7 +15,7 @@ public class TokenRepository {
 
     @Transactional
     public String saveRefreshToken(String name, OauthToken oauthToken){
-        Token token = new Token(name, oauthToken.getAccessToken(), oauthToken.getRefreshToken());
+        Token token = new Token(name, oauthToken.getAccess_token(), oauthToken.getRefresh_token());
         em.persist(token);
         return token.getUUID();
     }

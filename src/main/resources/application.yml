@@ -5,8 +5,8 @@ spring:
     #    각자 PC에 만들어놓은 Database이름을 써야 합니다.
     url: jdbc:mysql://127.0.0.1:3306/test_db # Database이름 ?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     #    mysql에 생성한 사용자 계정 정보를 써야 합니다.
-    username: dd_usr
-    password: 1234
+    username: root
+    password: tnghks15963@A
   thymeleaf:
     cache: false
 
@@ -17,4 +17,3 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-
