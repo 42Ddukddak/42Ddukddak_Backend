@@ -48,7 +48,7 @@ public class ApiService {
        params.add("client_id", "u-s4t2ud-3b57ef43b210f8fbf7a0029fa629f976bd0a1506976d74b843eab9f4bafa2727");
        params.add("client_secret", "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");
        params.add("code", code);
-       params.add("redirect_uri", "http://localhost:8080/api/auth/callback");
+       params.add("redirect_uri", "http://localhost/auth/callback");
 
        return new HttpEntity<>(params, headers);
     }
