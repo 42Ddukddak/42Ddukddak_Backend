@@ -29,4 +29,14 @@ public class TokenRepository {
             return null;
         }
     }
+
+    public Token findByKey(String key){
+        try{
+            return em.createQuery("select m from Token m where m.UUID = :key", Token.class)
+                    .setParameter("key", key)
+                    .getSingleResult();
+        }catch(IllegalStateException e){
+            return null;
+        }
+    }
 }

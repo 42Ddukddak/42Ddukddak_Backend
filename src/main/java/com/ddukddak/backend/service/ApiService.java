@@ -31,7 +31,6 @@ public class ApiService {
 
     public OauthToken getOauthToken(String code){
         req = req42TokenHeader(code);
-//        rt.exchange("https://api.intra.42.fr/oauth/token", HttpMethod.POST, req, String.class);
         res = resPostApi(req, req42TokenUri());
         return readOauthToken(res.getBody());
     }
