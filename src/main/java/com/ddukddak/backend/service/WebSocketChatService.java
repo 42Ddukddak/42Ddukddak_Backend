@@ -11,9 +11,15 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.*;
 
+/*
+* publicChatRoom에서 websocket 사용을 위한 endpoint 설정,
+* OnOpen - 처음 접속 시 Session 부여,
+* OnMessage - 메세지 수송신 어노테이션
+* OnClose - 세션 종료 시 remove
+* */
 @Service
 @Slf4j
-@ServerEndpoint("/")
+@ServerEndpoint("/ws")
 public class WebSocketChatService {
     private static Set<Session> clients = Collections.synchronizedSet(new HashSet<Session>());
 
