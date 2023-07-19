@@ -1,9 +1,11 @@
 package com.ddukddak.backend.controller;
 
 import com.ddukddak.backend.domain.OauthToken;
+import com.ddukddak.backend.domain.User;
 import com.ddukddak.backend.domain.User42Info;
 import com.ddukddak.backend.repository.TokenRepository;
 import com.ddukddak.backend.service.ApiService;
+import com.ddukddak.backend.service.UserService;
 import com.ddukddak.backend.utils.Define;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ public class LoginController {
 
     private final ApiService apiService;
     private final TokenRepository tokenRepository;
+    private final UserService userService;
     private HttpSession httpSession;
 
     @GetMapping("api/42login")
@@ -36,7 +39,9 @@ public class LoginController {
     public ResponseEntity login(HttpServletResponse res, HttpServletRequest req, @RequestParam(name = "code") String code) {
         OauthToken oauthToken = apiService.getOauthToken(code);
         User42Info user42Info = apiService.get42SeoulInfo(oauthToken.getAccess_token());
+        User user = new User(user42Info.getLogin());
 
+        userService.join(user);
         String key = tokenRepository.saveRefreshToken(user42Info.getLogin(), oauthToken);
         httpSession = req.getSession();
         httpSession.setAttribute("name", user42Info.getLogin());

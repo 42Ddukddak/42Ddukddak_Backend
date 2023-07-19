@@ -38,6 +38,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
 
+    public User(String userName) {
+        this.banned = false;
+        this.intraId = userName;
+        this.master = false;
+        this.reportNumber = 0L;
+    }
+
     /*
         예약 잡은 횟수를 확인하는 로직
      */

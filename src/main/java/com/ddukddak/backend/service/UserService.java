@@ -21,11 +21,11 @@ public class UserService {
         return user.getId();
     }
 
-    private List<User> findUsers() {
+    public List<User> findUsers() {
         return userRepository.findAll();
     }
 
-    private User findOne(Long userId) {
+    public User findOne(Long userId) {
         return userRepository.findOne(userId);
     }
 }
