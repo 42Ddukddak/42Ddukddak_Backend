@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/chat-list")
     @ResponseBody
-    private ResponseEntity chatList(Long userId){
+    public ResponseEntity chatList(Long userId){
         User user = userService.findOne(userId);
         List<Reservation> reservations = user.getReservations();
         List<ReservationDTO> result = new ArrayList<>();

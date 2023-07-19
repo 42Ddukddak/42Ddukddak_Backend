@@ -30,6 +30,7 @@ public class Reservation {
         reservation.setChatRoomName(title);
         reservation.status = ReservationStatus.RESERVE;
         reservation.setReservationTime(LocalDateTime.now());
+        user.getReservations().add(reservation);
         return reservation;
     }
 

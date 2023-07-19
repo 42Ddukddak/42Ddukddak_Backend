@@ -1,9 +1,12 @@
 package com.ddukddak.backend.repository;
 
 import com.ddukddak.backend.domain.Reservation;
+import com.ddukddak.backend.domain.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -19,4 +22,9 @@ public class ReservationRepository {
         return em.find(Reservation.class, id);
     }
 
+    public List<Reservation> findAll(User user) {
+        return em.createQuery("select r from Reservation r where r.user.id = :id", Reservation.class)
+                .setParameter("id", user.getId())
+                .getResultList();
+    }
 }

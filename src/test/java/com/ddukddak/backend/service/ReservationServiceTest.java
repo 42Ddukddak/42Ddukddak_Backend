@@ -46,12 +46,12 @@ class ReservationServiceTest {
     }
 
     private User createUser(){
-        User user = new User();
-        user.setIntraId("suhwpark");
-        user.setBanned(false);
-        user.setReportNumber(0L);
-        user.setReportTime(LocalDateTime.now());
-        user.setMaster(false);
+        User user = new User("gd");
+////        user.setIntraId("suhwpark");
+//        user.setBanned(false);
+//        user.setReportNumber(0L);
+//        user.setReportTime(LocalDateTime.now());
+//        user.setMaster(false);
         em.persist(user);
         return user;
     }

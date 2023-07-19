@@ -3,15 +3,16 @@ package com.ddukddak.backend.dto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Getter
 public class ReservationDTO {
 
     private String roomName;
-    private LocalDateTime reservedTime;
+    private String reservedTime;
 
     public ReservationDTO(String roomName, LocalDateTime reservedTime){
         this.roomName = roomName;
-        this.reservedTime = reservedTime;
+        this.reservedTime = reservedTime.format(DateTimeFormatter.BASIC_ISO_DATE);
     }
 }
