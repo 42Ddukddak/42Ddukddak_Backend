@@ -3,7 +3,7 @@
 
 <!--<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">-->
     <th:block th:fragment="content">
-
+<!---->
         <div class="container">
             <div class="col-6">
                 <h1>[[${room.name}]]</h1>
@@ -35,6 +35,7 @@
 
         var roomName = [[${room.name}]];
         var roomId = [[${room.roomId}]];
+
         var username = [[${#authentication.principal.username}]];
 
         console.log(roomName + ", " + roomId + ", " + username);

@@ -1,5 +1,6 @@
 package com.ddukddak.backend.controller;
 
+import com.ddukddak.backend.dto.ChatRoomDTO;
 import com.ddukddak.backend.repository.PrivateChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -38,13 +41,14 @@ public class PrivateChatroomController {
 
         log.info(" # Created Chat room!" + name);
 
-        rttr.addFlashAttribute("roomname", repository.createChatRoomDTO(name));
+        ChatRoomDTO room = repository.createChatRoomDTO(name);
+        rttr.addFlashAttribute("roomName", repository.createChatRoomDTO(name));
         return "redirect:/chat/rooms";
     }
 
     //채팅방 조회
     @GetMapping("/room")
-    public void getRoom(String roomId, Model model) {
+    public void getRoom(String roomId, Model model, Principal principal) {
         log.info("# get Chat Room, id : " + roomId);
 
         model.addAttribute("room", repository.findRoomByName(roomId));
