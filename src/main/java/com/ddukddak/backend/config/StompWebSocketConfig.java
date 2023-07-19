@@ -6,7 +6,7 @@ import org.springframework.web.socket.config.annotation.*;
 
 //@Component
 @Configuration
-@EnableWebSocket
+@EnableWebSocketMessageBroker
 public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     /*
@@ -17,13 +17,13 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     * */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").withSockJS();
+        registry.addEndpoint("/stomp/chat").setAllowedOrigins("http://localhost:8080");
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.setApplicationDestinationPrefixes("/test");
-        config.enableSimpleBroker("/topic", "/queue");
+        config.setApplicationDestinationPrefixes("/pub"); // client -> SEND
+        config.enableSimpleBroker("/sub"); // broker : sub하는 client에게 메세지 전달.
     }
 
 
