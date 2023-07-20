@@ -6,6 +6,9 @@ import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserService;
 import com.ddukddak.backend.utils.Define;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +28,7 @@ public class LoginController {
     private final UserService userService;
     private HttpSession httpSession;
 
-    @Operation(summary = "")
+    @Operation(summary = "go login page", description = "로그인 페이지로 이동시키는 API")
     @GetMapping("api/42login")
     public String goLogin(HttpServletRequest req) {
         httpSession = req.getSession(false);
@@ -34,6 +37,14 @@ public class LoginController {
         return "redirect:" + Define.REDIRECT_URI;
     }
 
+    @Operation(summary = "login", description = "42api와 연결해 로그인 시키는 API",
+            parameters = {
+                @Parameter(name = "code", description = "42api 콜백 주소에서 제공하는 code", in = ParameterIn.QUERY)
+            },
+            responses = {
+                @ApiResponse(responseCode = "200")
+            }
+    )
     @PostMapping ("api/auth/42login")
     @ResponseBody
     public ResponseEntity login(HttpServletResponse res, HttpServletRequest req, @RequestParam(name = "code") String code) {
