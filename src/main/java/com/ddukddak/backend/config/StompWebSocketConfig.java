@@ -18,8 +18,9 @@ public class StompWebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOrigins("http://localhost:8080")
+                .setAllowedOrigins("/*")
                 .withSockJS();
+        // setAllow -> http://localhost:8080 이 도메인만 허락할지, 다 열어줄지 고민...
     }
 
     @Override
