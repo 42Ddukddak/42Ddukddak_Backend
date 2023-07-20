@@ -47,11 +47,18 @@ public class PrivateChatroomController {
     }
 
     //채팅방 조회
+//    @GetMapping("/room")
+//    public void getRoom(String roomId, Model model, Principal principal) {
+//        log.info("# get Chat Room, id : " + roomId);
+//
+//        model.addAttribute("room", repository.findRoomByName(roomId));
+//    }
     @GetMapping("/room")
-    public void getRoom(String roomId, Model model, Principal principal) {
-        log.info("# get Chat Room, id : " + roomId);
+    public ModelAndView getRoom(@RequestParam(value = "roomId") String roomId) {
+        ModelAndView mv = new ModelAndView("chat/room");
+        mv.addObject("room", repository.findRoomByName(roomId));
 
-        model.addAttribute("room", repository.findRoomByName(roomId));
+        return mv;
     }
 
 
