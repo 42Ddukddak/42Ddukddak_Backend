@@ -5,6 +5,7 @@ import com.ddukddak.backend.api.entity.OauthToken;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserService;
 import com.ddukddak.backend.utils.Define;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ public class LoginController {
     private final UserService userService;
     private HttpSession httpSession;
 
+    @Operation(summary = "")
     @GetMapping("api/42login")
     public String goLogin(HttpServletRequest req) {
         httpSession = req.getSession(false);
