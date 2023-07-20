@@ -1,4 +1,4 @@
-package com.ddukddak.backend.dto;
+package com.ddukddak.backend.reservation.dto;
 
 import lombok.Getter;
 

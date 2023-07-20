@@ -1,5 +1,6 @@
 package com.ddukddak.backend.reservation;
 
+import com.ddukddak.backend.reservation.Enum.ReservationStatus;
 import com.ddukddak.backend.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;

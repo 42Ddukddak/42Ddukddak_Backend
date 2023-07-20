@@ -5,7 +5,7 @@ import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
 import com.ddukddak.backend.reservation.ReservationRepository;
 import com.ddukddak.backend.reservation.Reservation;
 import com.ddukddak.backend.reservation.ReservationService;
-import com.ddukddak.backend.reservation.ReservationStatus;
+import com.ddukddak.backend.reservation.Enum.ReservationStatus;
 import com.ddukddak.backend.user.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;

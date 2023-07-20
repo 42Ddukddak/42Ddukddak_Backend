@@ -1,6 +1,6 @@
 package com.ddukddak.backend.chat.privateChatRoom;
 
-import com.ddukddak.backend.dto.ChatRoomDTO;
+import com.ddukddak.backend.chat.dto.ChatRoomDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

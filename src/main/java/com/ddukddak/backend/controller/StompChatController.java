@@ -1,6 +1,6 @@
 package com.ddukddak.backend.controller;
 
-import com.ddukddak.backend.dto.ChatMessageDTO;
+import com.ddukddak.backend.chat.dto.ChatMessageDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

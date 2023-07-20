@@ -1,9 +1,9 @@
 package com.ddukddak.backend.controller;
 
 import com.ddukddak.backend.reservation.Reservation;
-import com.ddukddak.backend.reservation.ReservationStatus;
+import com.ddukddak.backend.reservation.Enum.ReservationStatus;
 import com.ddukddak.backend.user.User;
-import com.ddukddak.backend.dto.ReservationDTO;
+import com.ddukddak.backend.reservation.dto.ReservationDTO;
 import com.ddukddak.backend.reservation.ReservationRepository;
 import com.ddukddak.backend.reservation.ReservationService;
 import com.ddukddak.backend.user.UserController;

@@ -1,4 +1,4 @@
-package com.ddukddak.backend.dto;
+package com.ddukddak.backend.chat.dto;
 
 import lombok.Getter;
 import lombok.Setter;
