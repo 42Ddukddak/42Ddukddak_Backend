@@ -1,4 +1,4 @@
-package com.ddukddak.backend.domain;
+package com.ddukddak.backend.reservation;
 
 public enum ReservationStatus {
     RESERVE, CANCEL;

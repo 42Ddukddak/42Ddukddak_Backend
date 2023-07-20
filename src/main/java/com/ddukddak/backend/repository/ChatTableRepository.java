@@ -1,8 +1,7 @@
 package com.ddukddak.backend.repository;
 
-import com.ddukddak.backend.domain.ChatTable;
+import com.ddukddak.backend.chat.ChatTable;
 import jakarta.persistence.EntityManager;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

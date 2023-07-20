@@ -1,6 +1,5 @@
-package com.ddukddak.backend.repository;
+package com.ddukddak.backend.user;
 
-import com.ddukddak.backend.domain.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

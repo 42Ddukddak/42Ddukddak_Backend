@@ -1,15 +1,16 @@
-package com.ddukddak.backend.domain;
+package com.ddukddak.backend.user;
 
+import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
+import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.reservation.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.java.Log;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter @Setter

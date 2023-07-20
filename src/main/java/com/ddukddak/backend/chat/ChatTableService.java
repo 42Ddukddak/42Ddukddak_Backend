@@ -1,8 +1,7 @@
-package com.ddukddak.backend.service;
+package com.ddukddak.backend.chat;
 
-import com.ddukddak.backend.domain.ChatTable;
+import com.ddukddak.backend.chat.ChatTable;
 import com.ddukddak.backend.repository.ChatTableRepository;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
-package com.ddukddak.backend.repository;
+package com.ddukddak.backend.api;
 
-import com.ddukddak.backend.domain.OauthToken;
-import com.ddukddak.backend.domain.Token;
+import com.ddukddak.backend.api.entity.OauthToken;
+import com.ddukddak.backend.api.entity.Token;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

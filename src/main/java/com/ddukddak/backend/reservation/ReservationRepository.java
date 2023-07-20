@@ -1,7 +1,7 @@
-package com.ddukddak.backend.repository;
+package com.ddukddak.backend.reservation;
 
-import com.ddukddak.backend.domain.Reservation;
-import com.ddukddak.backend.domain.User;
+import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.user.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

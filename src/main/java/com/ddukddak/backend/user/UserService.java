@@ -1,7 +1,5 @@
-package com.ddukddak.backend.service;
+package com.ddukddak.backend.user;
 
-import com.ddukddak.backend.domain.User;
-import com.ddukddak.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

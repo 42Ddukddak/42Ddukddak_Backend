@@ -1,5 +1,6 @@
-package com.ddukddak.backend.domain;
+package com.ddukddak.backend.chat.publicChatRoom;
 
+import com.ddukddak.backend.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,7 +1,7 @@
-package com.ddukddak.backend.service;
+package com.ddukddak.backend.api;
 
-import com.ddukddak.backend.domain.OauthToken;
-import com.ddukddak.backend.domain.User42Info;
+import com.ddukddak.backend.api.dto.User42Info;
+import com.ddukddak.backend.api.entity.OauthToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

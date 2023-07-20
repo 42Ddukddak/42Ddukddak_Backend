@@ -1,4 +1,4 @@
-package com.ddukddak.backend.service;
+package com.ddukddak.backend.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

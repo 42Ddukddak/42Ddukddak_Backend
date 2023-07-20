@@ -1,4 +1,4 @@
-package com.ddukddak.backend.controller;
+package com.ddukddak.backend.chat.publicChatRoom;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

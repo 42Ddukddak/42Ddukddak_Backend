@@ -1,4 +1,4 @@
-package com.ddukddak.backend.domain;
+package com.ddukddak.backend.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

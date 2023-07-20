@@ -1,4 +1,4 @@
-package com.ddukddak.backend.service;
+package com.ddukddak.backend.repository;
 
 import org.springframework.stereotype.Service;
 

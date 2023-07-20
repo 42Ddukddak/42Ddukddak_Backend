@@ -1,18 +1,13 @@
-package com.ddukddak.backend.service;
+package com.ddukddak.backend.reservation;
 
-import com.ddukddak.backend.domain.ChatTable;
-import com.ddukddak.backend.domain.PrivateChatRoom;
-import com.ddukddak.backend.domain.Reservation;
-import com.ddukddak.backend.domain.User;
+import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
+import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.repository.ChatTableRepository;
-import com.ddukddak.backend.repository.ReservationRepository;
-import com.ddukddak.backend.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

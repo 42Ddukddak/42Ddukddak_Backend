@@ -1,6 +1,5 @@
-package com.ddukddak.backend.repository;
+package com.ddukddak.backend.chat.privateChatRoom;
 
-import com.ddukddak.backend.domain.PrivateChatRoom;
 import com.ddukddak.backend.dto.ChatRoomDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

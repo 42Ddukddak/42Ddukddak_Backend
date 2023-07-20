@@ -1,4 +1,4 @@
-package com.ddukddak.backend.domain;
+package com.ddukddak.backend.api.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

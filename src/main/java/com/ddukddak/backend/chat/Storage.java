@@ -1,4 +1,4 @@
-package com.ddukddak.backend.domain;
+package com.ddukddak.backend.chat;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

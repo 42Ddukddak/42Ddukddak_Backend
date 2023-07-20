@@ -1,13 +1,17 @@
 package com.ddukddak.backend.service;
 
-import com.ddukddak.backend.domain.*;
-import com.ddukddak.backend.repository.ReservationRepository;
+import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
+import com.ddukddak.backend.reservation.ReservationRepository;
+import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.reservation.ReservationService;
+import com.ddukddak.backend.reservation.ReservationStatus;
+import com.ddukddak.backend.user.User;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +26,8 @@ import static org.junit.Assert.assertEquals;
 class ReservationServiceTest {
 
     @Autowired EntityManager em;
-    @Autowired ReservationService reservationService;
+    @Autowired
+    ReservationService reservationService;
     @Autowired ReservationRepository reservationRepository;
 
 

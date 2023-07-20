@@ -1,5 +1,6 @@
-package com.ddukddak.backend.domain;
+package com.ddukddak.backend.chat.privateChatRoom;
 
+import com.ddukddak.backend.chat.ChatTable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

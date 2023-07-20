@@ -1,11 +1,9 @@
-package com.ddukddak.backend.controller;
+package com.ddukddak.backend.api;
 
-import com.ddukddak.backend.domain.OauthToken;
-import com.ddukddak.backend.domain.User;
-import com.ddukddak.backend.domain.User42Info;
-import com.ddukddak.backend.repository.TokenRepository;
-import com.ddukddak.backend.service.ApiService;
-import com.ddukddak.backend.service.UserService;
+import com.ddukddak.backend.api.dto.User42Info;
+import com.ddukddak.backend.api.entity.OauthToken;
+import com.ddukddak.backend.user.User;
+import com.ddukddak.backend.user.UserService;
 import com.ddukddak.backend.utils.Define;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

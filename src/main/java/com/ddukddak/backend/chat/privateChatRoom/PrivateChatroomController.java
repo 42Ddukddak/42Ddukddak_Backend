@@ -1,7 +1,6 @@
-package com.ddukddak.backend.controller;
+package com.ddukddak.backend.chat.privateChatRoom;
 
 import com.ddukddak.backend.dto.ChatRoomDTO;
-import com.ddukddak.backend.repository.PrivateChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

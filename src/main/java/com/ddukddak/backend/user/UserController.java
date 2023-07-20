@@ -1,11 +1,8 @@
-package com.ddukddak.backend.controller;
+package com.ddukddak.backend.user;
 
-import com.ddukddak.backend.domain.Reservation;
-import com.ddukddak.backend.domain.ReservationStatus;
-import com.ddukddak.backend.domain.User;
+import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.reservation.ReservationStatus;
 import com.ddukddak.backend.dto.ReservationDTO;
-import com.ddukddak.backend.repository.UserRepository;
-import com.ddukddak.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

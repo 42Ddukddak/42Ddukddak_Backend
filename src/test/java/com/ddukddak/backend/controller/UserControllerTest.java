@@ -1,24 +1,20 @@
 package com.ddukddak.backend.controller;
 
-import com.ddukddak.backend.domain.Reservation;
-import com.ddukddak.backend.domain.ReservationStatus;
-import com.ddukddak.backend.domain.User;
+import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.reservation.ReservationStatus;
+import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.dto.ReservationDTO;
-import com.ddukddak.backend.repository.ReservationRepository;
-import com.ddukddak.backend.service.ReservationService;
-import com.ddukddak.backend.service.UserService;
+import com.ddukddak.backend.reservation.ReservationRepository;
+import com.ddukddak.backend.reservation.ReservationService;
+import com.ddukddak.backend.user.UserController;
+import com.ddukddak.backend.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.core.util.Json;
 import jakarta.persistence.EntityManager;
-import org.json.JSONArray;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -26,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
