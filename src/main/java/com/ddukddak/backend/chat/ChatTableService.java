@@ -1,7 +1,5 @@
 package com.ddukddak.backend.chat;
 
-import com.ddukddak.backend.chat.ChatTable;
-import com.ddukddak.backend.repository.ChatTableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

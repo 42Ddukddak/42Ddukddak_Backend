@@ -1,4 +1,4 @@
-package com.ddukddak.backend.repository;
+package com.ddukddak.backend.chat;
 
 import com.ddukddak.backend.chat.ChatTable;
 import jakarta.persistence.EntityManager;

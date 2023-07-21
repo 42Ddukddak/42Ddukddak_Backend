@@ -1,5 +1,9 @@
 package com.ddukddak.backend.user;
 
+import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.ChatTableService;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomService;
 import com.ddukddak.backend.reservation.Reservation;
 import com.ddukddak.backend.reservation.Enum.ReservationStatus;
 import com.ddukddak.backend.reservation.dto.ReservationDTO;
@@ -20,6 +24,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ChatTableService chatTableService;
+    private final PrivateChatRoomService privateChatRoomService;
+
     @PostMapping("/")
     public String create(@RequestParam(name = "userName") String intraId){
         User user = new User(intraId);
@@ -38,6 +45,23 @@ public class UserController {
                 result.add(new ReservationDTO(r.getChatRoomName(), r.getReservationTime()));
             }
         }
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
+
+    @PostMapping("/ddukddak")
+    @ResponseBody
+    public ResponseEntity createDdukddak(@RequestParam Long id, @RequestParam String roomName) throws Exception{
+        User user = userService.findOne(id);
+        if (user.isMaster())
+            throw new IllegalStateException("방장임;;");
+        PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
+        privateChatRoomService.join(privateChatRoom, user);
+        ChatTable chatTable = new ChatTable(user, privateChatRoom);
+        chatTableService.join(chatTable);
+        user.getChatTables().add(chatTable);
+        privateChatRoom.getUsers().add(chatTable);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 }

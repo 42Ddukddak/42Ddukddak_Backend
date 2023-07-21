@@ -1,17 +1,21 @@
 package com.ddukddak.backend.chat.privateChatRoom;
 
 import com.ddukddak.backend.chat.dto.ChatRoomDTO;
+import com.ddukddak.backend.user.User;
 import jakarta.annotation.PostConstruct;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Repository
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PrivateChatRoomRepository {
 
-//    private final PrivateChatRoom privateChatRoom;
+    private final EntityManager em;
     private Map<String, ChatRoomDTO> chatRoomDTOMap;
 
     @PostConstruct
@@ -35,5 +39,11 @@ public class PrivateChatRoomRepository {
         chatRoomDTOMap.put(room.getRoomId(), room);
 
         return room;
+    }
+
+    @Transactional
+    public Long save(PrivateChatRoom privateChatRoom) {
+        em.persist(privateChatRoom);
+        return privateChatRoom.getId();
     }
 }

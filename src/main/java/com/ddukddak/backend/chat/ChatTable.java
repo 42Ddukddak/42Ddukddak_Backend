@@ -25,4 +25,9 @@ public class ChatTable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "private_chat_room_id")
     private PrivateChatRoom privateChatRoom;
+
+    public ChatTable(User user, PrivateChatRoom privateChatRoom){
+        this.user = user;
+        this.privateChatRoom = privateChatRoom;
+    }
 }
