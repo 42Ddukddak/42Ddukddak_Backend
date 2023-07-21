@@ -1,4 +1,4 @@
-package com.ddukddak.backend.controller;
+package com.ddukddak.backend.chat;
 
 import com.ddukddak.backend.chat.dto.ChatMessageDTO;
 import lombok.RequiredArgsConstructor;
