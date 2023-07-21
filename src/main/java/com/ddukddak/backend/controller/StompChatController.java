@@ -2,12 +2,15 @@ package com.ddukddak.backend.controller;
 
 import com.ddukddak.backend.chat.dto.ChatMessageDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class StompChatController {
 
     private final SimpMessagingTemplate template;
@@ -19,7 +22,8 @@ public class StompChatController {
     }
 
     @MessageMapping(value = "/chat/message")
-    public void message(ChatMessageDTO message) {
+    public void message(@RequestBody ChatMessageDTO message) {
+        log.info(message.getMessage());
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 }

@@ -1,6 +1,7 @@
 package com.ddukddak.backend.chat.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class ChatRoomDTO {
         ChatRoomDTO chatRoom = new ChatRoomDTO();
 
 //        chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.roomId = "1";
+        chatRoom.roomId = "tlqkf";
         chatRoom.name = name;
         return chatRoom;
     }
