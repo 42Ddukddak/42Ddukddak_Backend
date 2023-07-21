@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.ddukddak.backend.controller.UserControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-07-19T09:33:19" hostname="bagsohyeons-MacBook-Air.local" time="0.53">
+  <properties/>
+  <testcase name="유저_예약_현황()" classname="com.ddukddak.backend.controller.UserControllerTest" time="0.53"/>
+  <system-out><![CDATA[18:33:16.692 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.ddukddak.backend.controller.UserControllerTest]: UserControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+18:33:16.751 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.ddukddak.backend.BackendApplication for test class com.ddukddak.backend.controller.UserControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.1.1)
+
+2023-07-19T18:33:16.955+09:00  INFO 5095 --- [    Test worker] c.d.b.controller.UserControllerTest      : Starting UserControllerTest using Java 17.0.7 with PID 5095 (started by parksohyun in /Users/parksohyun/Desktop/42Ddukddak_Backend)
+2023-07-19T18:33:16.956+09:00  INFO 5095 --- [    Test worker] c.d.b.controller.UserControllerTest      : No active profile set, falling back to 1 default profile: "default"
+2023-07-19T18:33:17.297+09:00  INFO 5095 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2023-07-19T18:33:17.308+09:00  INFO 5095 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 JPA repository interfaces.
+2023-07-19T18:33:17.508+09:00  INFO 5095 --- [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2023-07-19T18:33:17.539+09:00  INFO 5095 --- [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.5.Final
+2023-07-19T18:33:17.540+09:00  INFO 5095 --- [    Test worker] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2023-07-19T18:33:17.606+09:00  INFO 5095 --- [    Test worker] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-07-19T18:33:17.668+09:00  INFO 5095 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2023-07-19T18:33:17.677+09:00  INFO 5095 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2023-07-19T18:33:17.923+09:00  INFO 5095 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@d1f23a0
+2023-07-19T18:33:17.925+09:00  INFO 5095 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2023-07-19T18:33:17.971+09:00  WARN 5095 --- [    Test worker] org.hibernate.orm.deprecation            : HHH90000026: MySQL57Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2023-07-19T18:33:18.093+09:00  INFO 5095 --- [    Test worker] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2023-07-19T18:33:18.333+09:00  INFO 5095 --- [    Test worker] o.h.m.i.EntityInstantiatorPojoStandard   : HHH000182: No default (no-argument) constructor for class: com.ddukddak.backend.domain.User (class must be instantiated by Interceptor)
+2023-07-19T18:33:18.446+09:00  INFO 5095 --- [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+Hibernate: alter table private_chat_room modify column create_time  datetime(6)
+Hibernate: alter table reservation modify column reservation_time  datetime(6)
+Hibernate: alter table reservation modify column status  enum ('CANCEL','RESERVE')
+Hibernate: alter table user modify column report_time  datetime(6)
+2023-07-19T18:33:18.580+09:00  INFO 5095 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2023-07-19T18:33:18.843+09:00  INFO 5095 --- [    Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2023-07-19T18:33:19.401+09:00  INFO 5095 --- [    Test worker] c.d.b.controller.UserControllerTest      : Started UserControllerTest in 2.575 seconds (process running for 3.169)
+Hibernate: insert into user (banned,login,master,public_chat_room_public_room_id,report_number,report_time) values (?,?,?,?,?,?)
+2023-07-19T18:33:19.736+09:00  INFO 5095 --- [    Test worker] c.d.b.controller.UserControllerTest      : userId45
+Hibernate: insert into reservation (chat_room_name,reservation_time,status,user_id) values (?,?,?,?)
+Hibernate: insert into reservation (chat_room_name,reservation_time,status,user_id) values (?,?,?,?)
+Hibernate: insert into reservation (chat_room_name,reservation_time,status,user_id) values (?,?,?,?)
+Hibernate: insert into reservation (chat_room_name,reservation_time,status,user_id) values (?,?,?,?)
+Hibernate: insert into reservation (chat_room_name,reservation_time,status,user_id) values (?,?,?,?)
+Hibernate: insert into reservation (chat_room_name,reservation_time,status,user_id) values (?,?,?,?)
+Hibernate: select r1_0.reservation_id,r1_0.chat_room_name,r1_0.reservation_time,r1_0.status,r1_0.user_id from reservation r1_0 where r1_0.user_id=?
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
