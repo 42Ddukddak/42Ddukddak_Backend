@@ -41,6 +41,14 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
 
+    public User(String userName, PublicChatRoom publicChatRoom) {
+        this.banned = false;
+        this.intraId = userName;
+        this.master = false;
+        this.reportNumber = 0L;
+        this.publicChatRoom = publicChatRoom;
+    }
+
     public User(String userName) {
         this.banned = false;
         this.intraId = userName;

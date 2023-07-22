@@ -46,4 +46,5 @@ public class PrivateChatRoomRepository {
         em.persist(privateChatRoom);
         return privateChatRoom.getId();
     }
+
 }

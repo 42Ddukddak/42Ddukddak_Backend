@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,15 +28,16 @@ public class HomeController {
     *
     *
     * */
+//
+//    @GetMapping("/ddukddak")
+//    public ResponseEntity create(Long userId) throws IllegalStateException {
+//        User user = userService.findOne(userId);
+//        privateChatRoomService.join(user);
+//        if (user.isMaster())
+//            throw new IllegalStateException("이미 방장입니다");
+//        user.setMaster(true);
+//
+//        return new ResponseEntity(Define.PUBLIC_ROOM_ID, HttpStatus.OK);
+//    }
 
-    @GetMapping("/ddukddak")
-    public ResponseEntity create(Long userId) throws IllegalStateException {
-        User user = userService.findOne(userId);
-        privateChatRoomService.join(user);
-        if (user.isMaster())
-            throw new IllegalStateException("이미 방장입니다");
-        user.setMaster(true);
-
-        return new ResponseEntity(Define.PUBLIC_ROOM_ID, HttpStatus.OK);
-    }
 }

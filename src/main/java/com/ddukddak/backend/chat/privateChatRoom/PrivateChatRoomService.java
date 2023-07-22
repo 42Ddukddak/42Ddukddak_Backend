@@ -17,4 +17,5 @@ public class PrivateChatRoomService {
         privateChatRoomRepository.save(privateChatRoom);
         return privateChatRoom.getId();
     }
+
 }

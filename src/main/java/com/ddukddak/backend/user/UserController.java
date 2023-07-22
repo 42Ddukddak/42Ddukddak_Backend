@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +23,6 @@ public class UserController {
     private final UserService userService;
     private final ChatTableService chatTableService;
     private final PrivateChatRoomService privateChatRoomService;
-
-    @PostMapping("/")
-    public String create(@RequestParam(name = "userName") String intraId){
-        User user = new User(intraId);
-        userService.join(user);
-        return "redirect:/";
-    }
 
     @GetMapping("/chat-list")
     @ResponseBody
@@ -52,8 +42,6 @@ public class UserController {
     @ResponseBody
     public ResponseEntity createDdukddak(@RequestParam Long id, @RequestParam String roomName) throws Exception{
         User user = userService.findOne(id);
-        if (user.isMaster())
-            throw new IllegalStateException("방장임;;");
         PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
         privateChatRoomService.join(privateChatRoom, user);
         ChatTable chatTable = new ChatTable(user, privateChatRoom);

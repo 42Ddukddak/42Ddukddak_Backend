@@ -5,18 +5,20 @@ import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
 import com.ddukddak.backend.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class ChatTable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "chat_table_id")
     private Long id;
 
-    @Embedded
-    private Storage storage;
+//    @Embedded
+//    private Storage storage;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

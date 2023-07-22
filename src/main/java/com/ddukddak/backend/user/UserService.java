@@ -1,5 +1,6 @@
 package com.ddukddak.backend.user;
 
+import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,12 @@ public class UserService {
         return user.getId();
     }
 
+    @Transactional
+    public User create(String intraId, PublicChatRoom publicChatRoom){
+        User user = new User(intraId, publicChatRoom);
+        userRepository.save(user);
+        return user;
+    }
     public List<User> findUsers() {
         return userRepository.findAll();
     }
