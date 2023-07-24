@@ -17,9 +17,7 @@ public class PublicChatRoomService {
     public final PublicChatRoomRepository chatRoomRepository;
 
     public Long join(User user){
-//        PublicChatRoom publicChatRoom = user.getPublicChatRoom();
         PublicChatRoom publicChatRoom = chatRoomRepository.findOne(1006L);
-//        publicChatRoom.getUsers().add(user);
         publicChatRoom.addUser(user);
         chatRoomRepository.save(publicChatRoom);
         return publicChatRoom.getId();
@@ -34,7 +32,6 @@ public class PublicChatRoomService {
 
     public PublicChatRoom create(){
         PublicChatRoom publicChatRoom = new PublicChatRoom();
-//        publicChatRoom.setId(Define.PUBLIC_CHAT_ROOM_ID);
         chatRoomRepository.save(publicChatRoom);
         return publicChatRoom;
     }

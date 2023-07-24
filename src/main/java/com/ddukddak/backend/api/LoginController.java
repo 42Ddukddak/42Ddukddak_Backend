@@ -61,7 +61,6 @@ public class LoginController {
 
         PublicChatRoom room = repository.findOne(1006L);
         if (room == null) {
-//            room = publicChatRoomService.create();
             room = new PublicChatRoom();
         }
         User user = userService.create(user42Info.getLogin(), room);
