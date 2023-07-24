@@ -59,12 +59,13 @@ public class LoginController {
         OauthToken oauthToken = apiService.getOauthToken(code);
         User42Info user42Info = apiService.get42SeoulInfo(oauthToken.getAccess_token());
 
-//        User user = userService.create(user42Info.getLogin(), publicChatRoom);
-//        PublicChatRoom room = publicChatRoomService.create();
-//        log.info("here");
-//        User user = userService.create(user42Info.getLogin(), room);
-////
-//        publicChatRoomService.join(user);
+        PublicChatRoom room = repository.findOne(1006L);
+        if (room == null) {
+//            room = publicChatRoomService.create();
+            room = new PublicChatRoom();
+        }
+        User user = userService.create(user42Info.getLogin(), room);
+        publicChatRoomService.join(user);
 
 
         String key = tokenRepository.saveRefreshToken(user42Info.getLogin(), oauthToken);

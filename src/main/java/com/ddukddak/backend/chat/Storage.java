@@ -22,6 +22,7 @@ public class Storage {
     private LocalDateTime time;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "public_room_id")
     private PublicChatRoom publicChatRoom;
 
     public Storage(String intraId, String message, LocalDateTime time){

@@ -18,12 +18,13 @@ public class PublicChatRoomService {
 
     @Transactional
     public Long join(User user){
-        PublicChatRoom publicChatRoom = user.getPublicChatRoom();
-        publicChatRoom.getUsers().add(user);
+//        PublicChatRoom publicChatRoom = user.getPublicChatRoom();
+        PublicChatRoom publicChatRoom = chatRoomRepository.findOne(1006L);
+//        publicChatRoom.getUsers().add(user);
+        publicChatRoom.addUser(user);
         chatRoomRepository.save(publicChatRoom);
         return publicChatRoom.getId();
     }
-
     @Transactional
     public PublicChatRoom findOne(Long id){
         PublicChatRoom publicChatRoom = chatRoomRepository.findOne(id);
@@ -43,14 +44,14 @@ public class PublicChatRoomService {
 
     @Transactional // 이부분 transactional 안걸려도 될듯.. reposit에서 저장 갈기니까
     public void saveContents(String userName, String contents, LocalDateTime time) {
-        PublicChatRoom pub = chatRoomRepository.findOne(Define.PUBLIC_CHAT_ROOM_ID);
+        PublicChatRoom pub = chatRoomRepository.findOne(1006L);
         Storage storage = new Storage(userName, contents, time);
 //
 //        if (pub.getStorages().size() >= Define.MAX_COUNT) {
 //            pub.setStorages(new ArrayList<>()); // 특정 개수를
 //
 //        }
-        pub.getStorages().add(storage);
+        pub.addStorage(storage);
         chatRoomRepository.save(pub);
     }
 }

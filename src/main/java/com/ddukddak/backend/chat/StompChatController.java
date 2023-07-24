@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -31,7 +33,7 @@ public class StompChatController {
 
     @MessageMapping(value = "/chat/message")
     public void message(@RequestBody ChatMessageDTO message) {
-        log.info("message is ... : " + message.getMessage());
+        log.info(message.getMessage());
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
@@ -43,8 +45,9 @@ public class StompChatController {
     @MessageMapping(value = "/chat/message/public")
     public void publicMessage(@RequestBody ChatMessageDTO message) {
         log.info("msg is ...!!!" + message.getMessage());
+        message.setTime(LocalDateTime.now());
+
         publicChatRoomService.saveContents(message.getSender(), message.getMessage(), message.getTime());
-        message.setSender("me");
         template.convertAndSend("/sub/chat/public/" + Define.PUBLIC_CHAT_ROOM_ID, message);
     }
 

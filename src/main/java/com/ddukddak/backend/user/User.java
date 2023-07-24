@@ -33,6 +33,7 @@ public class User {
     private LocalDateTime reportTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "public_room_id")
     private PublicChatRoom publicChatRoom;
 
     @OneToMany(mappedBy = "user")

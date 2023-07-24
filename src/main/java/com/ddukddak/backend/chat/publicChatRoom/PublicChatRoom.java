@@ -27,4 +27,13 @@ public class PublicChatRoom {
     @OneToMany(mappedBy = "publicChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Storage> storages = new ArrayList<>();
 
+    public void addUser(User user) {
+        users.add(user);
+        user.setPublicChatRoom(this);
+    }
+
+    public void addStorage(Storage storage) {
+        storages.add(storage);
+        storage.setPublicChatRoom(this);
+    }
 }
