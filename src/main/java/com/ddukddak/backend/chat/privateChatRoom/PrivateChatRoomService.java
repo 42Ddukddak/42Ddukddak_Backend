@@ -1,9 +1,12 @@
 package com.ddukddak.backend.chat.privateChatRoom;
 
+import com.ddukddak.backend.chat.Storage;
 import com.ddukddak.backend.user.User;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -18,4 +21,9 @@ public class PrivateChatRoomService {
         return privateChatRoom.getId();
     }
 
+
+
+//    public void saveContents(String sender, String message, LocalDateTime time, String roomId) {
+//        PrivateChatRoom chatRoom = privateChatRoomRepository.findRoomByName(roomId);
+//    }
 }

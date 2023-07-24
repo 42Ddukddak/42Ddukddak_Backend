@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -20,7 +20,6 @@ public class UserService {
         return user.getId();
     }
 
-    @Transactional
     public User create(String intraId, PublicChatRoom publicChatRoom){
         User user = new User(intraId, publicChatRoom);
         userRepository.save(user);

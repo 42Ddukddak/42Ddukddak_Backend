@@ -15,7 +15,7 @@ import java.util.Map;
 @Getter @Setter
 public class PublicChatRoom {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "public_room_id")
     private Long id;
 

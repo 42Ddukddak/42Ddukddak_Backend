@@ -3,6 +3,7 @@ package com.ddukddak.backend.api;
 import com.ddukddak.backend.api.dto.User42Info;
 import com.ddukddak.backend.api.entity.OauthToken;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
+import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoomRepository;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoomService;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserService;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,12 +25,14 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class LoginController {
 
     private final ApiService apiService;
     private final TokenRepository tokenRepository;
     private final UserService userService;
     private final PublicChatRoomService publicChatRoomService;
+    private final PublicChatRoomRepository repository;
     private HttpSession httpSession;
 
     @Operation(summary = "go login page", description = "로그인 페이지로 이동시키는 API")
@@ -55,15 +59,20 @@ public class LoginController {
         OauthToken oauthToken = apiService.getOauthToken(code);
         User42Info user42Info = apiService.get42SeoulInfo(oauthToken.getAccess_token());
 
-        PublicChatRoom publicChatRoom = publicChatRoomService.findOne(Define.PUBLIC_CHAT_ROOM_ID);
-        User user = userService.create(user42Info.getLogin(), publicChatRoom);
-        publicChatRoomService.join(user);
+//        User user = userService.create(user42Info.getLogin(), publicChatRoom);
+//        PublicChatRoom room = publicChatRoomService.create();
+//        log.info("here");
+//        User user = userService.create(user42Info.getLogin(), room);
+////
+//        publicChatRoomService.join(user);
+
 
         String key = tokenRepository.saveRefreshToken(user42Info.getLogin(), oauthToken);
         httpSession = req.getSession();
         httpSession.setAttribute("name", user42Info.getLogin());
 
-        Cookie cookie = new Cookie("key", key);
+//        Cookie cookie = new Cookie("key", key);
+        Cookie cookie = new Cookie("intraId", user42Info.getLogin());
         cookie.setMaxAge(50*120);
         cookie.setPath("/");
 

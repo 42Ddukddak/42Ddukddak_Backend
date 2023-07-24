@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PublicChatRoomService {
 
     public final PublicChatRoomRepository chatRoomRepository;
@@ -36,12 +36,12 @@ public class PublicChatRoomService {
     @Transactional
     public PublicChatRoom create(){
         PublicChatRoom publicChatRoom = new PublicChatRoom();
-        publicChatRoom.setId(Define.PUBLIC_CHAT_ROOM_ID);
+//        publicChatRoom.setId(Define.PUBLIC_CHAT_ROOM_ID);
         chatRoomRepository.save(publicChatRoom);
         return publicChatRoom;
     }
 
-    @Transactional
+    @Transactional // 이부분 transactional 안걸려도 될듯.. reposit에서 저장 갈기니까
     public void saveContents(String userName, String contents, LocalDateTime time) {
         PublicChatRoom pub = chatRoomRepository.findOne(Define.PUBLIC_CHAT_ROOM_ID);
         Storage storage = new Storage(userName, contents, time);
