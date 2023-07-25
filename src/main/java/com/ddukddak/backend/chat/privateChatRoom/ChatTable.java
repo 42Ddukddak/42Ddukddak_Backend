@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor
@@ -22,6 +24,9 @@ public class ChatTable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "private_chat_room_id")
     private PrivateChatRoom privateChatRoom;
+
+    @OneToMany(mappedBy = "privateStorage")
+    private List<PrivateStorage> privateStorages;
 
     public static ChatTable createChatTable(User user, PrivateChatRoom privateChatRoom){
        ChatTable chatTable = new ChatTable();
