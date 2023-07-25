@@ -1,6 +1,6 @@
 package com.ddukddak.backend.service;
 
-import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
 import com.ddukddak.backend.reservation.ReservationRepository;
 import com.ddukddak.backend.reservation.Reservation;

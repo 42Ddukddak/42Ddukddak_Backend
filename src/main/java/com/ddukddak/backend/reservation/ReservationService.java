@@ -1,9 +1,9 @@
 package com.ddukddak.backend.reservation;
 
-import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
 import com.ddukddak.backend.user.User;
-import com.ddukddak.backend.chat.ChatTableRepository;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTableRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

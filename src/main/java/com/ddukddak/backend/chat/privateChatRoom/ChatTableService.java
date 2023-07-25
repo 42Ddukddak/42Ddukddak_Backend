@@ -1,8 +1,9 @@
-package com.ddukddak.backend.chat;
+package com.ddukddak.backend.chat.privateChatRoom;
 
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTableRepository;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomRepository;
-import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomService;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;

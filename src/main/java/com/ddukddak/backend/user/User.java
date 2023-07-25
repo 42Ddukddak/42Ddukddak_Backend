@@ -1,6 +1,6 @@
 package com.ddukddak.backend.user;
 
-import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
 import com.ddukddak.backend.reservation.Reservation;
 import com.ddukddak.backend.reservation.Enum.ReservationStatus;

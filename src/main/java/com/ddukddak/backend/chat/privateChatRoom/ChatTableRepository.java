@@ -1,6 +1,6 @@
-package com.ddukddak.backend.chat;
+package com.ddukddak.backend.chat.privateChatRoom;
 
-import com.ddukddak.backend.chat.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

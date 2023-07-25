@@ -1,10 +1,11 @@
 package com.ddukddak.backend.chat.privateChatRoom;
 
-import com.ddukddak.backend.chat.ChatTableService;
-import com.ddukddak.backend.user.UserRepository;
+import com.ddukddak.backend.chat.dto.PrivateRoomInfo;
 import com.ddukddak.backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -46,9 +47,11 @@ public class PrivateChatroomController {
 //    }
 
     @PostMapping("/ddukddak")
-    public void createDdukddak(@RequestParam(name = "roomName") String roomName, @RequestParam(name = "login") String userName) throws Exception{
+    public ResponseEntity createDdukddak(@RequestParam(name = "roomName") String roomName, @RequestParam(name = "login") String userName) throws Exception{
         log.info(userName, roomName);
-        userService.createPrivateChatRoom(userName, roomName);
+        Long roomId = userService.createPrivateChatRoom(userName, roomName);
+
+        return new ResponseEntity(new PrivateRoomInfo(roomId, roomName, userName, 15, 1), HttpStatus.OK);
     }
 
 //    @GetMapping("/ddukddak/{}")

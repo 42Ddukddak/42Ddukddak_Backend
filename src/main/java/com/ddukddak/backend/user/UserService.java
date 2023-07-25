@@ -1,7 +1,7 @@
 package com.ddukddak.backend.user;
 
-import com.ddukddak.backend.chat.ChatTable;
-import com.ddukddak.backend.chat.ChatTableRepository;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTableRepository;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomRepository;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
