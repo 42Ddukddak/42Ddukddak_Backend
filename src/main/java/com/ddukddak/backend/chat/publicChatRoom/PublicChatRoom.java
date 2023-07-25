@@ -1,15 +1,12 @@
 package com.ddukddak.backend.chat.publicChatRoom;
 
-import com.ddukddak.backend.chat.Storage;
 import com.ddukddak.backend.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter @Setter

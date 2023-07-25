@@ -45,15 +45,16 @@ public class StompChatController {
     @MessageMapping(value = "/chat/message/public")
     public void publicMessage(@RequestBody ChatMessageDTO message) {
         log.info("msg is ...!!!" + message.getMessage());
-        message.setTime(LocalDateTime.now());
 
-        publicChatRoomService.saveContents(message.getSender(), message.getMessage(), message.getTime());
+        publicChatRoomService.saveContents(message.getSender(), message.getMessage());
         template.convertAndSend("/sub/chat/public/" + Define.PUBLIC_CHAT_ROOM_ID, message);
     }
 
     @MessageMapping(value = "chat/message/private")
     public void privateMessage(@RequestBody ChatMessageDTO message) {
         log.info("i'm in private msg.... : " + message.getMessage());
+
+        privateChatRoomService.saveContents(message.getSender(), message.getMessage(), message.getRoomId());
         template.convertAndSend("/sub/chat/room/1", message);
 
     }

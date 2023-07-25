@@ -1,6 +1,5 @@
 package com.ddukddak.backend.chat.publicChatRoom;
 
-import com.ddukddak.backend.chat.Storage;
 import com.ddukddak.backend.utils.Define;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;

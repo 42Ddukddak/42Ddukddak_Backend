@@ -1,8 +1,6 @@
 package com.ddukddak.backend.chat.publicChatRoom;
 
-import com.ddukddak.backend.chat.Storage;
 import com.ddukddak.backend.user.User;
-import com.ddukddak.backend.utils.Define;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,9 +34,9 @@ public class PublicChatRoomService {
         return publicChatRoom;
     }
 
-    public void saveContents(String userName, String contents, LocalDateTime time) {
+    public void saveContents(String userName, String contents) {
         PublicChatRoom pub = chatRoomRepository.findOne(1006L);
-        Storage storage = new Storage(userName, contents, time);
+        Storage storage = new Storage(userName, contents);
 //
 //        if (pub.getStorages().size() >= Define.MAX_COUNT) {
 //            pub.setStorages(new ArrayList<>()); // 특정 개수를

@@ -1,4 +1,4 @@
-package com.ddukddak.backend.chat;
+package com.ddukddak.backend.chat.publicChatRoom;
 
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
 import jakarta.persistence.*;
@@ -25,9 +25,9 @@ public class Storage {
     @JoinColumn(name = "public_room_id")
     private PublicChatRoom publicChatRoom;
 
-    public Storage(String intraId, String message, LocalDateTime time){
+    public Storage(String intraId, String message){
         this.intraId = intraId;
         this.message = message;
-        this.time = time;
+        this.time = LocalDateTime.now();
     }
 }

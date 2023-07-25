@@ -50,6 +50,11 @@ public class User {
         this.publicChatRoom = publicChatRoom;
     }
 
+    public void addChatTables(ChatTable chatTable) {
+        chatTables.add(chatTable);
+//        chatTable.
+    }
+
     public User(String userName) {
         this.banned = false;
         this.intraId = userName;
