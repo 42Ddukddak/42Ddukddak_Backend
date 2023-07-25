@@ -63,7 +63,7 @@ public class LoginController {
         if (room == null) {
             room = new PublicChatRoom();
         }
-        User user = userService.create(user42Info.getLogin(), room);
+        User user = userService.createPublicChatRoom(user42Info.getLogin(), room);
         publicChatRoomService.join(user);
 
 

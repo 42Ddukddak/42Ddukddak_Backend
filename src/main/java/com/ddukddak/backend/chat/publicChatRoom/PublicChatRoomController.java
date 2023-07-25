@@ -26,13 +26,13 @@ public class PublicChatRoomController {
         return "redirect:/";
     }
 
-    @PostMapping("/sub/chat/public") // 경로 나중에 수정
-    public ResponseEntity<String> saveMessage(@RequestBody ChatMessageDTO data) {
-        if (data.getMessage() != null && data.getSender() != null) {
-            publicChatRoomService.saveContents(data.getSender(), data.getMessage(), data.getTime());
-            return ResponseEntity.ok("메세지 저장 성공");
-        } else {
-            return ResponseEntity.badRequest().body("잘못된 메시지 데이터");
-        }
-    }
+//    @PostMapping("/sub/chat/public") // 경로 나중에 수정
+//    public ResponseEntity<String> saveMessage(@RequestBody ChatMessageDTO data) {
+//        if (data.getMessage() != null && data.getSender() != null) {
+//            publicChatRoomService.saveContents(data.getSender(), data.getMessage(), data.getTime());
+//            return ResponseEntity.ok("메세지 저장 성공");
+//        } else {
+//            return ResponseEntity.badRequest().body("잘못된 메시지 데이터");
+//        }
+//    }
 }

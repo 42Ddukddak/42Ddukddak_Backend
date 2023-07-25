@@ -31,9 +31,9 @@ public class UserRepository {
                 .getResultList();
     }
 
-    public List<User> findByName(String userName) {
+    public User findByName(String userName) {
         return em.createQuery("select m from User m where m.intraId = :userName", User.class)
-                .setParameter("login", userName)
-                .getResultList();
+                .setParameter("userName", userName)
+                .getSingleResult();
     }
 }

@@ -38,18 +38,18 @@ public class UserController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-    @PostMapping("/ddukddak")
-    @ResponseBody
-    public ResponseEntity createDdukddak(@RequestParam Long id, @RequestParam String roomName) throws Exception{
-        User user = userService.findOne(id);
-        PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
-        privateChatRoomService.join(privateChatRoom, user);
-        ChatTable chatTable = new ChatTable(user, privateChatRoom);
-        chatTableService.join(chatTable);
-        user.getChatTables().add(chatTable);
-        privateChatRoom.getUsers().add(chatTable);
-        return new ResponseEntity(HttpStatus.OK);
-    }
+//    @PostMapping("/ddukddak")
+//    @ResponseBody
+//    public ResponseEntity createDdukddak(@RequestParam Long id, @RequestParam String roomName) throws Exception{
+//        User user = userService.findOne(id);
+//        PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
+//        privateChatRoomService.join(privateChatRoom, user);
+//        ChatTable chatTable = new ChatTable(user, privateChatRoom);
+//        chatTableService.join(chatTable);
+//        user.getChatTables().add(chatTable);
+//        privateChatRoom.getUsers().add(chatTable);
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 
 
 }

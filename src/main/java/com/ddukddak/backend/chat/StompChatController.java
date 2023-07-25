@@ -59,12 +59,5 @@ public class StompChatController {
 
     }
 
-
-//    @MessageMapping(value = "/chat/message/private")
-//    public void privateMessage(@RequestBody ChatMessageDTO message) {
-//        log.info(message.getMessage());
-//        privateChatRoomService.saveContents(message.getSender(), message.getMessage(), message.getRoomId());
-//        template.convertAndSend("/sub/chat/room/" + privateChatRoomService.getRoomId(), message);
-//    }
 }
 

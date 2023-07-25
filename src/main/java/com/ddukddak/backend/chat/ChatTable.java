@@ -16,9 +16,6 @@ public class ChatTable {
     @Column(name = "chat_table_id")
     private Long id;
 
-//    @Embedded
-//    private Storage storage;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -27,8 +24,14 @@ public class ChatTable {
     @JoinColumn(name = "private_chat_room_id")
     private PrivateChatRoom privateChatRoom;
 
-    public ChatTable(User user, PrivateChatRoom privateChatRoom){
-        this.user = user;
-        this.privateChatRoom = privateChatRoom;
+    public static ChatTable createChatTable(User user, PrivateChatRoom privateChatRoom){
+       ChatTable chatTable = new ChatTable();
+       chatTable.setUser(user);
+       chatTable.setPrivateChatRoom(privateChatRoom);
+//       user.getChatTables().add(chatTable);
+//       privateChatRoom.getUsers().add(chatTable);
+
+       return chatTable;
     }
+
 }
