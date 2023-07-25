@@ -4,9 +4,11 @@ import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @RequiredArgsConstructor
+@Transactional
 public class ChatTableRepository {
 
     private final EntityManager em;

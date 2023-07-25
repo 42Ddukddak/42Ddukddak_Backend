@@ -25,7 +25,7 @@ public class ChatTable {
     @JoinColumn(name = "private_chat_room_id")
     private PrivateChatRoom privateChatRoom;
 
-    @OneToMany(mappedBy = "privateStorage")
+    @OneToMany(mappedBy = "chatTable")
     private List<PrivateStorage> privateStorages;
 
     public static ChatTable createChatTable(User user, PrivateChatRoom privateChatRoom){
@@ -36,6 +36,11 @@ public class ChatTable {
 //       privateChatRoom.getUsers().add(chatTable);
 
        return chatTable;
+    }
+
+    public void addPrivateStorages(PrivateStorage privateStorage) {
+        privateStorages.add(privateStorage);
+        privateStorage.setChatTable(this);
     }
 
 }

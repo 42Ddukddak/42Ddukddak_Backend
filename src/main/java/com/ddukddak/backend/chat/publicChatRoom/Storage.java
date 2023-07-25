@@ -25,7 +25,7 @@ public class Storage {
     @JoinColumn(name = "public_room_id")
     private PublicChatRoom publicChatRoom;
 
-    public Storage(String intraId, String message){
+    public Storage(String intraId, String message) {
         this.intraId = intraId;
         this.message = message;
         this.time = LocalDateTime.now();

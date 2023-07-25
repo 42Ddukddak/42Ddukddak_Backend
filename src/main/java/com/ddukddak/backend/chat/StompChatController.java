@@ -1,6 +1,7 @@
 package com.ddukddak.backend.chat;
 
 import com.ddukddak.backend.chat.dto.ChatMessageDTO;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTableService;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomService;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoomService;
 import com.ddukddak.backend.user.UserService;
@@ -21,13 +22,12 @@ import java.time.LocalDateTime;
 public class StompChatController {
 
     private final SimpMessagingTemplate template;
-    private final UserService userService;
     private final PublicChatRoomService publicChatRoomService;
-    private final PrivateChatRoomService privateChatRoomService;
+    private final ChatTableService chatTableService;
 
     @MessageMapping(value = "/chat/enter")
     public void enter(ChatMessageDTO message) {
-        message.setMessage(message.getSender() + " 님이 입장 하셨습니다");
+        message.setMessage(message.getLogin() + " 님이 입장 하셨습니다");
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 
@@ -46,7 +46,7 @@ public class StompChatController {
     public void publicMessage(@RequestBody ChatMessageDTO message) {
         log.info("msg is ...!!!" + message.getMessage());
 
-        publicChatRoomService.saveContents(message.getSender(), message.getMessage());
+        publicChatRoomService.saveContents(message.getLogin(), message.getMessage());
         template.convertAndSend("/sub/chat/public/" + Define.PUBLIC_CHAT_ROOM_ID, message);
     }
 
@@ -54,7 +54,7 @@ public class StompChatController {
     public void privateMessage(@RequestBody ChatMessageDTO message) {
         log.info("i'm in private msg.... : " + message.getMessage());
 
-        privateChatRoomService.saveContents(message.getSender(), message.getMessage(), message.getRoomId());
+        chatTableService.saveContents(message.getLogin(), message.getMessage(), message.getRoomId());
         template.convertAndSend("/sub/chat/room/1", message);
 
     }

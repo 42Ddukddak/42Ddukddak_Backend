@@ -13,8 +13,9 @@ public class ChatMessageDTO {
     }
 
     private String roomId;
-    private String sender;
+    private String login;
     private String message;
+    private String roomName;
     private LocalDateTime time;
     private MessageType type;
 }

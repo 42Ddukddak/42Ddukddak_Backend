@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional()
+@Transactional
 public class ChatTableService {
 
     private final ChatTableRepository chatTableRepository;
@@ -29,6 +29,14 @@ public class ChatTableService {
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);
         user = userRepository.findOne(user.getId());
 
+    }
+
+    public void saveContents(String sender, String message, String roomId) {
+        ChatTable chatTable = chatTableRepository.findOne(Long.parseLong(roomId));
+        PrivateStorage privateStorage = new PrivateStorage(sender, message, roomId);
+
+        chatTable.addPrivateStorages(privateStorage);
+        chatTableRepository.save(chatTable);
     }
 
 

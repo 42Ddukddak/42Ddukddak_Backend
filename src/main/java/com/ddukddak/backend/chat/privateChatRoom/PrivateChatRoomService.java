@@ -11,18 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 public class PrivateChatRoomService {
 
     private final PrivateChatRoomRepository chatRoomRepository;
+    private final ChatTableRepository chatTableRepository;
 
     public Long join(PrivateChatRoom privateChatRoom, User user) throws Exception{
         return chatRoomRepository.save(privateChatRoom, user);
     }
 
-    public void saveContents(String sender, String message, String roomId) {
-        PrivateChatRoom chatRoom = chatRoomRepository.findOne(Long.parseLong(roomId));
-//        PubStorage storage = new PubStorage(sender, message, roomId);
-
-//        chatRoom.addStorage(storage);
-//        chatRoomRepository.save(chatRoom);
-    }
+//    public void saveContents(String sender, String message, String roomId) {
+//        ChatTableRepository chatTable = chatTableRepository.findOne(Long.parseLong(roomId));
+//        PrivateStorage privateStorage = new PrivateStorage(sender, message, roomId);
+//
+//        chatTable.addStorage(privateStorage);
+////        chatRoomRepository.save(chatRoom);
+//    }
 
 
 //    public void saveContents(String sender, String message, LocalDateTime time, String roomId) {
