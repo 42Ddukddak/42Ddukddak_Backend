@@ -33,6 +33,7 @@ public class UserService {
 
     public Long createPrivateChatRoom(String intraId, String roomName) throws Exception{
         User user = userRepository.findByName(intraId);
+        user.setMaster(true);
         PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
         privateChatRoomRepository.save(privateChatRoom, user);
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);

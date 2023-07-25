@@ -50,7 +50,6 @@ public class PrivateChatroomController {
 //        model.addAttribute("room", repository.findRoomByName(roomId));
 //    }
 
-    //@RequestParam(name = "roomName") String roomName, @RequestParam(name = "login") String userName
     @PostMapping("/ddukddak")
     public PrivateRoomInfo createDdukddak(@RequestBody PrivateRoomInfo message) throws Exception{
         log.info(message.getHost());
@@ -59,7 +58,7 @@ public class PrivateChatroomController {
         Long roomId = table.getPrivateChatRoom().getId();
 
 //        return new ResponseEntity(new PrivateRoomInfo(roomId, roomName, userName, 15, 1), HttpStatus.OK);
-        return new PrivateRoomInfo(roomId, message.getRoomName(), message.getHost(), 0);
+        return new PrivateRoomInfo(roomId, message.getRoomName(), message.getHost(), 1);
     }
 
 //    @GetMapping("/ddukddak")
