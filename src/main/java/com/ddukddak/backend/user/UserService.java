@@ -37,6 +37,7 @@ public class UserService {
         PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
         privateChatRoomRepository.save(privateChatRoom, user);
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);
+        chatTable.setHost(user.getIntraId());
         chatTableRepository.save(chatTable);
         return chatTable.getId();
     }

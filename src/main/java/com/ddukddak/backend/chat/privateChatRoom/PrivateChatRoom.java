@@ -23,13 +23,23 @@ public class PrivateChatRoom {
 
     private Long restTime;
 
+    private int participantsNum;
+
     @OneToMany(mappedBy = "privateChatRoom")
     private List<ChatTable> users = new ArrayList<>();
 
     public PrivateChatRoom(String name){
         this.roomName = name;
         this.createTime = LocalDateTime.now();
-        this.restTime = 15L;
+        this.restTime = 15L; // 임시.. 계산해줘야됨
+        this.participantsNum = 1;
     }
+
+//    public Long restTime(LocalDateTime createTime) {
+//        LocalDateTime tmp = LocalDateTime.of
+//        Long endTime = createTime.plusMinutes(15);
+//
+//        return Long.parseLong(endTime.minusMinutes(createTime));
+//    }
 
 }

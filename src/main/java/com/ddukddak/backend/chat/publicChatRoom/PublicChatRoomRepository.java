@@ -21,6 +21,7 @@ public class PublicChatRoomRepository {
         return em.find(PublicChatRoom.class, id);
     }
 
+
 //    @Transactional
 //    public void clearStorage(){
 //        em.clear();

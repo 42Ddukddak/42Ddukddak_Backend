@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 @Transactional
@@ -19,5 +21,10 @@ public class ChatTableRepository {
 
     public ChatTable findOne(Long id){
         return em.find(ChatTable.class, id);
+    }
+
+    public List<ChatTable> findAll() {
+        return em.createQuery("select c from ChatTable c", ChatTable.class)
+                .getResultList();
     }
 }

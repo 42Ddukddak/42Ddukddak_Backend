@@ -29,6 +29,8 @@ public class ChatTable {
     @OneToMany(mappedBy = "chatTable", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PrivateStorage> privateStorages = new ArrayList<>();
 
+    private String host;
+    
     public static ChatTable createChatTable(User user, PrivateChatRoom privateChatRoom){
        ChatTable chatTable = new ChatTable();
        chatTable.setUser(user);

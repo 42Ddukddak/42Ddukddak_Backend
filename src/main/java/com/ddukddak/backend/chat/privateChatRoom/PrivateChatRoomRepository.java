@@ -58,8 +58,8 @@ public class PrivateChatRoomRepository {
 
     @Transactional
     public Long save(PrivateChatRoom privateChatRoom, User user) throws Exception{
-        if (user.isMaster() || user.isBanned())
-            throw new Exception("돌아가");
+//        if (user.isMaster() || user.isBanned())
+//            throw new Exception("돌아가");
         em.persist(privateChatRoom);
         return privateChatRoom.getId();
     }

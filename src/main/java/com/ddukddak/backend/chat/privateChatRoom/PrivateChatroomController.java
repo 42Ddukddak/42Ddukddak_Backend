@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/chat")
@@ -49,16 +52,17 @@ public class PrivateChatroomController {
 //
 //        model.addAttribute("room", repository.findRoomByName(roomId));
 //    }
+    @GetMapping("/roomList")
+    public List<PrivateRoomInfo> showRoomList() {
+        return tableService.getAllRoomInfo();
+    }
 
     @PostMapping("/ddukddak")
     public PrivateRoomInfo createDdukddak(@RequestBody PrivateRoomInfo message) throws Exception{
-        log.info(message.getHost());
-        Long tableId = userService.createPrivateChatRoom(message.getHost(), message.getRoomName());
-        ChatTable table = tableService.findOne(tableId);
-        Long roomId = table.getPrivateChatRoom().getId();
+        log.info(message.getLogin());
+        Long tableId = userService.createPrivateChatRoom(message.getLogin(), message.getRoomName());
 
-//        return new ResponseEntity(new PrivateRoomInfo(roomId, roomName, userName, 15, 1), HttpStatus.OK);
-        return new PrivateRoomInfo(roomId, message.getRoomName(), message.getHost(), 1);
+        return new PrivateRoomInfo(tableId, message.getRoomName(), message.getLogin(), 15L,1);
     }
 
 //    @GetMapping("/ddukddak")
