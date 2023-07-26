@@ -13,11 +13,12 @@ import java.time.temporal.ChronoUnit;
 @Getter @Setter
 @NoArgsConstructor
 public class PrivateRoomInfo {
-    Long roomId;
-    String roomName;
-    String login;
-    Long remainingTime;
-    int participantsNum;
+
+    private Long roomId;
+    private String roomName;
+    private String login;
+    private Long remainingTime;
+    private int participantsNum;
 
     public PrivateRoomInfo(Long roomId, String roomName, String host, Long restTime, int participantsNum) {
         this.roomId = roomId;

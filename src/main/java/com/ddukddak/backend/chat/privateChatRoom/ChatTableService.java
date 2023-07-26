@@ -1,5 +1,6 @@
 package com.ddukddak.backend.chat.privateChatRoom;
 
+import com.ddukddak.backend.chat.dto.PrivateMessage;
 import com.ddukddak.backend.chat.dto.PrivateRoomInfo;
 import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import com.ddukddak.backend.chat.privateChatRoom.ChatTableRepository;
@@ -68,5 +69,16 @@ public class ChatTableService {
 
     public ChatTable findOne(Long chatTableId){
         return chatTableRepository.findOne(chatTableId);
+    }
+    
+    public List<PrivateMessage> findMessageInfo(Long tableId){
+        ChatTable chatTable = chatTableRepository.findOne(tableId);
+        List<PrivateStorage> storages = chatTable.getPrivateStorages();
+        List<PrivateMessage> result = new ArrayList<>();
+
+        for(PrivateStorage storage : storages) {
+            result.add(PrivateMessage.create(storage.getContents(), storage.getIntraId(), storage.getSendTime()));
+        }
+        return result;
     }
 }
