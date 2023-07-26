@@ -41,7 +41,6 @@ public class ChatTable {
 
     public void addPrivateStorages(PrivateStorage privateStorage) {
         privateStorages.add(privateStorage);
-//        privateStorage.setChatTable(this);
     }
 
 }

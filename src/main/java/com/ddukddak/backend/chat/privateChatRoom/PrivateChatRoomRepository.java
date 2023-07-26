@@ -16,13 +16,6 @@ import java.util.*;
 public class PrivateChatRoomRepository {
 
     private final EntityManager em;
-    private Map<String, ChatRoomDTO> chatRoomDTOMap;
-//    private final PrivateChatRoom privateChatRoom;
-
-    @PostConstruct
-    private void init() {
-        chatRoomDTOMap = new LinkedHashMap<>();
-    }
 
     public PrivateChatRoom findOne(Long id) {
         return em.find(PrivateChatRoom.class, id);
@@ -31,24 +24,6 @@ public class PrivateChatRoomRepository {
     public List<PrivateChatRoom> findAll() {
         return em.createQuery("select r from PrivateChatRoom r", PrivateChatRoom.class)
                 .getResultList();
-    }
-
-//    public PrivateChatRoom findById(Long roomId) {
-//        return em.createQuery("select r from PrivateChatRoom r where r.id = :roomId", PrivateChatRoom.class)
-//                .setParameter("")
-//    }
-
-
-
-    public ChatRoomDTO findRoomByName(String id) {
-        return chatRoomDTOMap.get(id);
-    }
-
-    public ChatRoomDTO createChatRoomDTO(String name) {
-        ChatRoomDTO room = ChatRoomDTO.create(name);
-        chatRoomDTOMap.put(room.getRoomId(), room);
-
-        return room;
     }
 
     @Transactional

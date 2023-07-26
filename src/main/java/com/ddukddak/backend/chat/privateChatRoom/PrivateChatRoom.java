@@ -34,12 +34,4 @@ public class PrivateChatRoom {
         this.restTime = 15L; // 임시.. 계산해줘야됨
         this.participantsNum = 1;
     }
-
-//    public Long restTime(LocalDateTime createTime) {
-//        LocalDateTime tmp = LocalDateTime.of
-//        Long endTime = createTime.plusMinutes(15);
-//
-//        return Long.parseLong(endTime.minusMinutes(createTime));
-//    }
-
 }

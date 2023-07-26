@@ -24,7 +24,6 @@ public class ChatTableService {
 
     private final ChatTableRepository chatTableRepository;
     private final UserRepository userRepository;
-    private final PrivateChatRoomRepository privateChatRoomRepository;
 
     @Transactional
     public Long join(ChatTable chatTable){

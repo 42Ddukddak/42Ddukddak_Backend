@@ -15,18 +15,4 @@ public class PrivateChatRoomService {
     public Long join(PrivateChatRoom privateChatRoom, User user) throws Exception{
         return chatRoomRepository.save(privateChatRoom, user);
     }
-
-
-//    public void saveContents(String sender, String message, String roomId) {
-//        ChatTableRepository chatTable = chatTableRepository.findOne(Long.parseLong(roomId));
-//        PrivateStorage privateStorage = new PrivateStorage(sender, message, roomId);
-//
-//        chatTable.addStorage(privateStorage);
-////        chatRoomRepository.save(chatRoom);
-//    }
-
-
-//    public void saveContents(String sender, String message, LocalDateTime time, String roomId) {
-//        PrivateChatRoom chatRoom = privateChatRoomRepository.findRoomByName(roomId);
-//    }
 }
