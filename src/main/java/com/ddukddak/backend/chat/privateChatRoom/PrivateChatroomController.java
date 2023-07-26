@@ -22,38 +22,10 @@ public class PrivateChatroomController {
     private final UserService userService;
     private final ChatTableService tableService;
     private final PrivateChatRoomService privateChatRoomService;
-    //채팅방 목록 조회
-//    @GetMapping(value = "/rooms")
-//    public ModelAndView rooms() {
-//
-//        log.info("# All chat room");
-//
-//        ModelAndView mv = new ModelAndView("chat/rooms");
-//        mv.addObject("list", repository.findAllRooms());
-//
-//        return mv;
-//    }
 
-    //채팅방 개설
-//    @PostMapping(value = "/room")
-//    public String create(@RequestParam String name, RedirectAttributes rttr) {
-//
-//        log.info(" # Created Chat room!" + name);
-//
-//        ChatRoomDTO room = repository.createChatRoomDTO(name);
-//        rttr.addFlashAttribute("roomName", repository.createChatRoomDTO(name));
-//        return "redirect:/chat/rooms";
-//    }
-
-    //채팅방 조회
-//    @GetMapping("/room")
-//    public void getRoom(String roomId, Model model, Principal principal) {
-//        log.info("# get Chat Room, id : " + roomId);
-//
-//        model.addAttribute("room", repository.findRoomByName(roomId));
-//    }
     @GetMapping("/roomList")
     public List<PrivateRoomInfo> showRoomList() {
+
         return tableService.getAllRoomInfo();
     }
 
@@ -65,6 +37,11 @@ public class PrivateChatroomController {
         return new PrivateRoomInfo(tableId, message.getRoomName(), message.getLogin(), 15L,1);
     }
 
+//    @GetMapping("/private/{id}")
+//    public List<PrivateRoomInfo> showOneRoom(@PathVariable Long id) {
+//
+//    }
+//    @DeleteMapping
 //    @GetMapping("/ddukddak")
 //    public void joinMaster() {
 //        Long roomId = tableService.

@@ -38,12 +38,7 @@ public class PrivateChatRoomRepository {
 //                .setParameter("")
 //    }
 
-    public List<ChatRoomDTO> findAllRooms() {
-        List<ChatRoomDTO> result = new ArrayList<>(chatRoomDTOMap.values());
-        Collections.reverse(result); // 최근순 정렬
 
-        return result;
-    }
 
     public ChatRoomDTO findRoomByName(String id) {
         return chatRoomDTOMap.get(id);

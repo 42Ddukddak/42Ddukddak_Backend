@@ -53,9 +53,11 @@ public class StompChatController {
     @MessageMapping(value = "chat/message/private")
     public void privateMessage(@RequestBody ChatMessageDTO message) {
         log.info("i'm in private msg.... : " + message.getMessage());
+        log.info("sender is..." + message.getSender());
 
-        chatTableService.saveContents(message.getLogin(), message.getMessage(), message.getRoomId());
-        template.convertAndSend("/sub/chat/room/1", message);
+        //한번에 너무 많은 길이 validation 필요~
+        chatTableService.saveContents(message.getSender(), message.getMessage(), message.getRoomId());
+        template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
 
     }
 

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -38,10 +40,9 @@ public class ChatTableService {
     @Transactional
     public void saveContents(String sender, String message, String roomId) {
         ChatTable chatTable = chatTableRepository.findOne(Long.parseLong(roomId));
-        PrivateStorage privateStorage = new PrivateStorage(sender, message, roomId);
-
+        Long chatRoomId = chatTable.getPrivateChatRoom().getId();
+        PrivateStorage privateStorage = new PrivateStorage(sender, message, chatTable);
         chatTable.addPrivateStorages(privateStorage);
-//        chatTableRepository.save(chatTable);
         /*update
         * 한번 entity가 save가된 시점에서는 save를 재호출하기보다는
         * repo를 갈아끼우는 방식(set)을 추천한다고 하는데
@@ -61,6 +62,7 @@ public class ChatTableService {
                     table.getHost(), privateChatRoom.getCreateTime(), privateChatRoom.getParticipantsNum());
             result.add(privateRoomInfo);
         }
+        Collections.reverse(result);
         return result;
     }
 

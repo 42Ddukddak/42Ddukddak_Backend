@@ -2,32 +2,39 @@ package com.ddukddak.backend.chat.privateChatRoom;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class PrivateStorage {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "private_storage_id")
-    Long id;
+    private Long id;
 
-    String contents;
+    private String contents;
 
-    String intraId;
+    private String intraId;
 
-    Long roomId;
+    private Long roomId;
 
-    String roomName;
+    private String roomName;
+
+    private LocalDateTime sendTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_table_id")
     private ChatTable chatTable;
 
-    public PrivateStorage(String sender, String message, String roomId) {
+    public PrivateStorage(String sender, String message, ChatTable chatTable) {
         this.intraId = sender;
         this.contents = message;
-        this.roomId = Long.parseLong(roomId);
+        this.roomId = chatTable.getPrivateChatRoom().getId();
+        this.sendTime = LocalDateTime.now();
+        this.chatTable = chatTable;
     }
 }
