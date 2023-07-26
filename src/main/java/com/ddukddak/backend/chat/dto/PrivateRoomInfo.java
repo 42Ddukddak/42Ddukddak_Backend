@@ -5,7 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 
 @Getter @Setter
@@ -28,7 +30,18 @@ public class PrivateRoomInfo {
         this.roomId = roomId;
         this.roomName = roomName;
         this.login = host;
-        this.remainingTime = Duration.between(time, LocalDateTime.now()).getSeconds() / 60;
+        this.remainingTime = timeIs(time);
         this.participantsNum = participantsNum;
+    }
+
+    public Long timeIs(LocalDateTime createTime) {
+        LocalDateTime now = LocalDateTime.now();
+        Long remainingMin = createTime.until(now, ChronoUnit.MINUTES);
+        Long remainingSec = createTime.until(now, ChronoUnit.SECONDS) % 60;
+
+        Long totalRemainingMin = 15 - remainingMin;
+        Long totalRemainingSec = 60 - remainingSec;
+
+        return totalRemainingMin;
     }
 }

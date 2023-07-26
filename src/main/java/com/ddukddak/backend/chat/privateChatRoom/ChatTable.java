@@ -35,8 +35,6 @@ public class ChatTable {
        ChatTable chatTable = new ChatTable();
        chatTable.setUser(user);
        chatTable.setPrivateChatRoom(privateChatRoom);
-//       user.getChatTables().add(chatTable);
-//       privateChatRoom.getUsers().add(chatTable);
 
        return chatTable;
     }
