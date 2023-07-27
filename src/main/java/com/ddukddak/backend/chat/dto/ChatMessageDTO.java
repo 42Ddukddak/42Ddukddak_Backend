@@ -12,7 +12,7 @@ public class ChatMessageDTO {
         ENTER, TALK, LEAVE
     }
 
-    private String roomId;
+    private Long roomId;
     private String login;
     private String sender;
     private String message;

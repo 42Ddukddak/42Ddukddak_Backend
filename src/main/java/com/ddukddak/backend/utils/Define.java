@@ -6,4 +6,6 @@ public class Define {
     public static final String PUBLIC_ROOM_ID = java.util.UUID.randomUUID().toString();
     public static final Long PUBLIC_CHAT_ROOM_ID = 999L;
     public static final int MAX_COUNT = 50;
+
+    public static final Long EXPIRE_MIN = 15L;
 }

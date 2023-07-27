@@ -34,5 +34,9 @@ public class PrivateChatRoomRepository {
         return privateChatRoom.getId();
     }
 
+    public void delete(PrivateChatRoom privateChatRoom) {
+        em.remove(privateChatRoom);
+    }
+
 
 }

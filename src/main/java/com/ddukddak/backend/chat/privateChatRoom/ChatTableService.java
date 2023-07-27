@@ -2,28 +2,33 @@ package com.ddukddak.backend.chat.privateChatRoom;
 
 import com.ddukddak.backend.chat.dto.PrivateMessage;
 import com.ddukddak.backend.chat.dto.PrivateRoomInfo;
-import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
-import com.ddukddak.backend.chat.privateChatRoom.ChatTableRepository;
-import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
-import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomRepository;
+import com.ddukddak.backend.chat.dto.UniformDTO;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserRepository;
+import com.ddukddak.backend.utils.Define;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ChatTableService {
 
     private final ChatTableRepository chatTableRepository;
     private final UserRepository userRepository;
+    private final PrivateChatRoomRepository privateChatRoomRepository;
+    private final SimpMessagingTemplate template;
+    private int person;
 
     @Transactional
     public Long join(ChatTable chatTable){
@@ -38,18 +43,12 @@ public class ChatTableService {
     }
 
     @Transactional
-    public void saveContents(String sender, String message, String roomId) {
-        ChatTable chatTable = chatTableRepository.findOne(Long.parseLong(roomId));
-        Long chatRoomId = chatTable.getPrivateChatRoom().getId();
+    public Long saveContents(String sender, String message, Long roomId) {
+        ChatTable chatTable = chatTableRepository.findOne(roomId);
         PrivateStorage privateStorage = new PrivateStorage(sender, message, chatTable);
         chatTable.addPrivateStorages(privateStorage);
-        /*update
-        * 한번 entity가 save가된 시점에서는 save를 재호출하기보다는
-        * repo를 갈아끼우는 방식(set)을 추천한다고 하는데
-        * 여기에선 그럼 AddPrivateStorage만 해주면 될까?
-        * 막줄 Save에 대해....흠
-        * */
 
+        return chatTable.getId();
     }
 
     public List<PrivateRoomInfo> getAllRoomInfo() {
@@ -66,6 +65,10 @@ public class ChatTableService {
         return result;
     }
 
+    public Long restTime(LocalDateTime createTime) {
+        return Define.EXPIRE_MIN - createTime.until(LocalDateTime.now(), ChronoUnit.MINUTES);
+    }
+
     public ChatTable findOne(Long chatTableId){
         return chatTableRepository.findOne(chatTableId);
     }
@@ -80,4 +83,60 @@ public class ChatTableService {
         }
         return result;
     }
+
+    public List<UniformDTO> getMessageInfo(Long tableId) {
+        person++;
+        ChatTable chatTable = chatTableRepository.findOne(tableId);
+        PrivateChatRoom privateChatRoom = chatTable.getPrivateChatRoom();
+        List<PrivateStorage> storages = chatTable.getPrivateStorages();
+        List<UniformDTO> res = new ArrayList<>();
+
+        for(PrivateStorage storage : storages) {
+            res.add(new UniformDTO(storage.getIntraId(), storage.getContents(),
+                    restTime(privateChatRoom.getCreateTime()), person));
+        }
+        return res;
+    }
+
+    public UniformDTO create(Long roomId, String sender, String message, int people) {
+        PrivateChatRoom room =  privateChatRoomRepository.findOne(roomId);
+        UniformDTO uniformDTO = new UniformDTO();
+
+        uniformDTO.setSender(sender);
+        uniformDTO.setMessage(message);
+        uniformDTO.setTime(LocalDateTime.now());
+        uniformDTO.setRemainingTime(restTime(room.getCreateTime()));
+        uniformDTO.setParticipantsNum(people);
+
+        return uniformDTO;
+    }
+
+
+//    @Scheduled(fixedRate = 30000)
+//    public void checkExpiredChatRooms() {
+//        LocalDateTime currentTime = LocalDateTime.now();
+//        List<ChatTable> tables = chatTableRepository.findAll();
+//
+//        for (ChatTable table : tables) {
+//            LocalDateTime expirationTime = table.getPrivateChatRoom().getExpirationTime();
+//            log.info("after.... : " + expirationTime);
+//            if (expirationTime != null && expirationTime.isBefore(currentTime)) {
+//                log.info("expiration time is " + expirationTime);
+////                User user = table.getUser();
+//                for (PrivateStorage privateStorage : table.getPrivateStorages()) {
+//                    privateStorage.setChatTable(null);
+////                    privateStorageRepository.delete(table);
+//                }
+//                table.getPrivateStorages().clear();
+//
+//                table.setPrivateChatRoom(null);
+////                privateChatRoomRepository.delete(table.getPrivateChatRoom());
+//
+////                chatTableRepository.delete(table);
+//
+//                template.convertAndSend("sub/chat/room/" + table.getId(), "room_deleted");
+//            }
+//        }
+//
+//    }
 }

@@ -25,13 +25,16 @@ public class PrivateChatRoom {
 
     private int participantsNum;
 
+    private LocalDateTime expirationTime;
+
     @OneToMany(mappedBy = "privateChatRoom")
     private List<ChatTable> users = new ArrayList<>();
 
     public PrivateChatRoom(String name){
         this.roomName = name;
         this.createTime = LocalDateTime.now();
-        this.restTime = 15L; // 임시.. 계산해줘야됨
         this.participantsNum = 1;
+        this.expirationTime = createTime.plusMinutes(15);
     }
+
 }

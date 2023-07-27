@@ -27,4 +27,8 @@ public class ChatTableRepository {
         return em.createQuery("select c from ChatTable c", ChatTable.class)
                 .getResultList();
     }
+
+    public void delete(ChatTable chatTable) {
+        em.remove(chatTable);
+    }
 }
