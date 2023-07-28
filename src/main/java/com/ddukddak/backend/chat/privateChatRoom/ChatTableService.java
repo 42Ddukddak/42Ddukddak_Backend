@@ -10,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
+import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,7 @@ public class ChatTableService {
         List<ChatTable> chatTables = chatTableRepository.findAll();
 
         for (ChatTable table : chatTables) {
-            PrivateChatRoom privateChatRoom = table.getPrivateChatRoom();
+            PrivateChatRoom privateChatRoom = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
             PrivateRoomInfo privateRoomInfo = new PrivateRoomInfo(table.getId(), privateChatRoom.getRoomName(),
                     table.getHost(), privateChatRoom.getCreateTime(), privateChatRoom.getParticipantsNum());
             result.add(privateRoomInfo);
@@ -103,8 +104,9 @@ public class ChatTableService {
     public void remove(Long tableId) {
         ChatTable table = chatTableRepository.findOne(tableId);
         PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
-        em.remove(table);
+
         em.remove(room);
+//        em.remove(table);
     }
 
     public UniformDTO create(Long roomId, String sender, String message, int people) {
@@ -121,31 +123,28 @@ public class ChatTableService {
     }
 
 
-//    @Scheduled(fixedRate = 30000)
-//    public void checkExpiredChatRooms() {
-//        LocalDateTime currentTime = LocalDateTime.now();
-//        List<ChatTable> tables = chatTableRepository.findAll();
-//
-//        for (ChatTable table : tables) {
-//            LocalDateTime expirationTime = table.getPrivateChatRoom().getExpirationTime();
-//            log.info("after.... : " + expirationTime);
-//            if (expirationTime != null && expirationTime.isBefore(currentTime)) {
-//                log.info("expiration time is " + expirationTime);
-////                User user = table.getUser();
-//                for (PrivateStorage privateStorage : table.getPrivateStorages()) {
-//                    privateStorage.setChatTable(null);
-////                    privateStorageRepository.delete(table);
-//                }
-//                table.getPrivateStorages().clear();
-//
-//                table.setPrivateChatRoom(null);
-////                privateChatRoomRepository.delete(table.getPrivateChatRoom());
-//
-////                chatTableRepository.delete(table);
-//
-//                template.convertAndSend("sub/chat/room/" + table.getId(), "room_deleted");
-//            }
-//        }
-//
+//    @Scheduled(fixedRate = 900000) 15분
+    public void checkExpiredChatRooms() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<ChatTable> tables = chatTableRepository.findAll();
+
+        for (ChatTable table : tables) {
+            Long id = table.getId();
+            LocalDateTime expirationTime = table.getPrivateChatRoom().getExpirationTime();
+            log.info("after.... : " + expirationTime);
+            if (expirationTime != null && expirationTime.isBefore(currentTime)) {
+                log.info("expiration time is " + expirationTime);
+                PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
+                privateChatRoomRepository.delete(room);
+//                chatTableRepository.delete(table); // storage는 cascade로 엮여있음
+
+                log.info("table id " + id + " is deleted!");
+                template.convertAndSend("sub/chat/room/" + id, HttpStatus.OK);
+            }
+        }
+    }
+
+//    public boolean checkChatFlood(String intraId) {
+//        PrivateStorage privateStorage =
 //    }
 }

@@ -63,9 +63,7 @@ public class StompChatController {
         chatTableService.saveContents(message.getSender(), message.getMessage(), message.getRoomId());
         ChatTable table = chatTableService.findOne(message.getRoomId());
         UniformDTO res = chatTableService.create(table.getPrivateChatRoom().getId(), message.getSender(), message.getMessage(), 5);
-
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), res);
-
     }
 
 //    @MessageMapping(value = "chat/message/private")
