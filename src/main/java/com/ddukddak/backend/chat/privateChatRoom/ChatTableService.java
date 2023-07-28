@@ -80,6 +80,8 @@ public class ChatTableService {
         ChatTable chatTable = chatTableRepository.findOne(tableId);
         List<PrivateStorage> storages = chatTable.getPrivateStorages();
         List<PrivateMessage> result = new ArrayList<>();
+        User user = chatTable.getUser();
+        user.getChatTables().add(chatTable);
 
         for(PrivateStorage storage : storages) {
             result.add(PrivateMessage.create(storage.getContents(), storage.getIntraId(), storage.getSendTime()));
@@ -93,6 +95,8 @@ public class ChatTableService {
         PrivateChatRoom privateChatRoom = chatTable.getPrivateChatRoom();
         List<PrivateStorage> storages = chatTable.getPrivateStorages();
         List<UniformDTO> res = new ArrayList<>();
+        User user = chatTable.getUser();
+        user.getChatTables().set(0, chatTable); // 시발 어떡해 0번째 값을 계속 세팅해야대???
 
         for(PrivateStorage storage : storages) {
             res.add(new UniformDTO(storage.getIntraId(), storage.getContents(),
@@ -104,6 +108,7 @@ public class ChatTableService {
     public void remove(Long tableId) {
         ChatTable table = chatTableRepository.findOne(tableId);
         PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
+        table.getUser().getChatTables().remove(0);
 
         em.remove(room);
     }
@@ -122,7 +127,7 @@ public class ChatTableService {
     }
 
 
-    @Scheduled(fixedRate = 30000) //15분
+    @Scheduled(fixedRate = 30000) //30초
     public void checkExpiredChatRooms() {
         log.info("30초마다 자동 쓰레기통이 돈다.....");
         LocalDateTime currentTime = LocalDateTime.now();
@@ -136,6 +141,7 @@ public class ChatTableService {
                 log.info("expiration time is " + expirationTime);
                 PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
                 privateChatRoomRepository.delete(room);
+                log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
 
                 log.info("table id " + id + " is deleted!");
                 template.convertAndSend("sub/chat/room/" + id, HttpStatus.OK);
@@ -143,7 +149,7 @@ public class ChatTableService {
         }
     }
 
-//    public boolean checkChatFlood(String intraId) {
-//        PrivateStorage privateStorage =
+//    public void perfectTrashBin(Long tableId) {
+//
 //    }
 }

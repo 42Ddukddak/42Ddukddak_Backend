@@ -1,15 +1,17 @@
 package com.ddukddak.backend.user;
 
-import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
-import com.ddukddak.backend.chat.privateChatRoom.ChatTableRepository;
-import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
-import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomRepository;
+import com.ddukddak.backend.chat.privateChatRoom.*;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PrivateChatRoomRepository privateChatRoomRepository;
     private final ChatTableRepository chatTableRepository;
+    private final TaskScheduler taskScheduler;
 
     public Long join(User user) {
         userRepository.save(user);
@@ -36,9 +39,17 @@ public class UserService {
         user.setMaster(true);
         PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
         privateChatRoomRepository.save(privateChatRoom, user);
+//        if (privateChatRoom.getExpirationTime() != null) {
+//            Duration duration = Duration.between(privateChatRoom.getCreateTime(), privateChatRoom.getExpirationTime());
+//            long delayInMillis = duration.toMillis();
+//
+//            taskScheduler.schedule(new RoomDestructionTask(privateChatRoom, privateChatRoomRepository), new Date(System.currentTimeMillis() + delayInMillis));
+//        }
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);
         chatTable.setHost(user.getIntraId());
         chatTableRepository.save(chatTable);
+        user.getChatTables().add(chatTable);
+
         return chatTable.getId();
     }
 

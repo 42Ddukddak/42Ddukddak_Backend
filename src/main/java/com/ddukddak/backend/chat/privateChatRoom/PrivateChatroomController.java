@@ -41,11 +41,15 @@ public class PrivateChatroomController {
         return new PrivateRoomInfo(tableId, message.getRoomName(), message.getLogin(), 15L,1);
     }
 
-    /*
-    * 방의 db 정보, 방 내부의 userList 처리 방식 고민..
-    * 들어잇는 db의 정보를 제거하고, convertAndSendToUser 방식으로 보내는건?
-    * */
-    @PostMapping("/private/{id}/leave")
+    //만들어진 방에 들어가기
+    @GetMapping("/private/{id}")
+    public List<UniformDTO> showOneRoomInfo(@PathVariable Long id) {
+        log.info("selected room : " + id.toString());
+        return chatTableService.getMessageInfo(id);
+    }
+
+    //방장의 방 삭제하기
+    @PostMapping("/private/{id}/destroy")
     public void leaveRoom(@PathVariable Long id) {
 //        ChatTable room = chatTableService.findOne(id);
         chatTableService.remove(id);
@@ -53,11 +57,5 @@ public class PrivateChatroomController {
         template.convertAndSend("/sub/chat/room/" + id, HttpStatus.OK);
     }
 
-    //만들어진 방에 들어가기
-    @GetMapping("/private/{id}")
-    public List<UniformDTO> showOneRoomInfo(@PathVariable Long id) {
-        log.info("selected room : " + id.toString());
-        return chatTableService.getMessageInfo(id);
-    }
 }
 
