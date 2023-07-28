@@ -106,7 +106,6 @@ public class ChatTableService {
         PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
 
         em.remove(room);
-//        em.remove(table);
     }
 
     public UniformDTO create(Long roomId, String sender, String message, int people) {
@@ -123,8 +122,9 @@ public class ChatTableService {
     }
 
 
-//    @Scheduled(fixedRate = 900000) 15분
+    @Scheduled(fixedRate = 30000) //15분
     public void checkExpiredChatRooms() {
+        log.info("30초마다 자동 쓰레기통이 돈다.....");
         LocalDateTime currentTime = LocalDateTime.now();
         List<ChatTable> tables = chatTableRepository.findAll();
 
@@ -136,7 +136,6 @@ public class ChatTableService {
                 log.info("expiration time is " + expirationTime);
                 PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
                 privateChatRoomRepository.delete(room);
-//                chatTableRepository.delete(table); // storage는 cascade로 엮여있음
 
                 log.info("table id " + id + " is deleted!");
                 template.convertAndSend("sub/chat/room/" + id, HttpStatus.OK);
