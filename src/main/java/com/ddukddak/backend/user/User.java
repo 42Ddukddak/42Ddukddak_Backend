@@ -36,7 +36,7 @@ public class User {
     @JoinColumn(name = "public_room_id")
     private PublicChatRoom publicChatRoom;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatTable> chatTables = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")

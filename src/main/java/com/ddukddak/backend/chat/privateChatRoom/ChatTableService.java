@@ -6,6 +6,7 @@ import com.ddukddak.backend.chat.dto.UniformDTO;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserRepository;
 import com.ddukddak.backend.utils.Define;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cglib.core.Local;
@@ -28,6 +29,7 @@ public class ChatTableService {
     private final UserRepository userRepository;
     private final PrivateChatRoomRepository privateChatRoomRepository;
     private final SimpMessagingTemplate template;
+    private final EntityManager em;
     private int person;
 
     @Transactional
@@ -96,6 +98,13 @@ public class ChatTableService {
                     restTime(privateChatRoom.getCreateTime()), person));
         }
         return res;
+    }
+
+    public void remove(Long tableId) {
+        ChatTable table = chatTableRepository.findOne(tableId);
+        PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
+        em.remove(table);
+        em.remove(room);
     }
 
     public UniformDTO create(Long roomId, String sender, String message, int people) {

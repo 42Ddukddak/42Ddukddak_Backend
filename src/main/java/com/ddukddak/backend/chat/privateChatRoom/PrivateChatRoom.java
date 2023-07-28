@@ -27,8 +27,8 @@ public class PrivateChatRoom {
 
     private LocalDateTime expirationTime;
 
-    @OneToMany(mappedBy = "privateChatRoom")
-    private List<ChatTable> users = new ArrayList<>();
+    @OneToMany(mappedBy = "privateChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ChatTable> chatTables = new ArrayList<>();
 
     public PrivateChatRoom(String name){
         this.roomName = name;
