@@ -36,9 +36,8 @@ public class PrivateChatroomController {
     //새로운 방 만들기
     @PostMapping("/ddukddak")
     public PrivateRoomInfo createDdukddak(@RequestBody PrivateRoomInfo message) throws Exception{
-        log.info(message.getLogin());
+        log.info("POST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + message.getLogin());
         Long tableId = userService.createPrivateChatRoom(message.getLogin(), message.getRoomName());
-
         return new PrivateRoomInfo(tableId, message.getRoomName(), message.getLogin(), 15L,1);
     }
 
@@ -51,11 +50,19 @@ public class PrivateChatroomController {
 
     //방장의 방 삭제하기
     @PostMapping("/private/{id}/destroy")
-    public void leaveRoom(@PathVariable Long id) {
-        chatTableService.remove(id);
+    public void leaveMaster(@PathVariable Long id) {
+        chatTableService.destroy(id);
         log.info("in leave post" + HttpStatus.OK);
         template.convertAndSend("/sub/chat/room/" + id, HttpStatus.OK);
     }
+
+    // 방장이 아닌 사람의 방 떠나기
+    @PostMapping("/private/{roomId}/leave")
+    public ResponseEntity leaveRoom(@PathVariable Long roomId, @RequestParam(name = "intraId") String intraId) {
+        chatTableService.leave(intraId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
 }
 

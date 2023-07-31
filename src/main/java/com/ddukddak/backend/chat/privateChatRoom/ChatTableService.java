@@ -29,7 +29,6 @@ public class ChatTableService {
     private final UserRepository userRepository;
     private final PrivateChatRoomRepository privateChatRoomRepository;
     private final SimpMessagingTemplate template;
-    private final EntityManager em;
     private int person;
 
     @Transactional
@@ -44,6 +43,7 @@ public class ChatTableService {
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);
         user.getChatTables().add(chatTable);
         chatTableRepository.save(chatTable);
+        log.info("null, name : " + chatTable.getPrivateChatRoom().getRoomName());
         return chatTable;
     }
 
@@ -94,17 +94,20 @@ public class ChatTableService {
     }
 
     public List<UniformDTO> getMessageInfo(Long tableId, String intraId) {
-        person++;
         User user = userRepository.findByName(intraId);
         PrivateChatRoom privateChatRoom = chatTableRepository.findOne(tableId).getPrivateChatRoom();
+        person = privateChatRoom.getParticipantsNum();
+        privateChatRoom.setParticipantsNum(person + 1);
+        log.info("before privateRoom id : " + privateChatRoom.getId());
+        List<ChatTable> tables = user.getChatTables();
         if (!user.isMaster()) {
-            ChatTable chatTable = chatTableRepository.findByName(intraId);
-            if (chatTable != null) {
-                chatTable.setPrivateChatRoom(privateChatRoom);
-            }
-            else {
+            if (tables.size() == 0) {
                 createTable(intraId, privateChatRoom);
             }
+            else {
+                tables.get(0).setPrivateChatRoom(privateChatRoom);
+            }
+
         }
         List<PrivateStorage> storages = privateChatRoom.getPrivateStorages();
         List<UniformDTO> res = new ArrayList<>();
@@ -112,17 +115,11 @@ public class ChatTableService {
 
         for(PrivateStorage storage : storages) {
             res.add(new UniformDTO(storage.getIntraId(), storage.getContents(),
-                    restTime(privateChatRoom.getCreateTime()), person));
+                    restTime(privateChatRoom.getCreateTime()), privateChatRoom.getParticipantsNum()));
         }
         return res;
     }
 
-    public void remove(Long tableId) {
-        ChatTable table = chatTableRepository.findOne(tableId);
-        PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
-
-        em.remove(room);
-    }
 
     public UniformDTO create(Long roomId, String sender, String message, int people) {
         PrivateChatRoom room =  privateChatRoomRepository.findOne(roomId);
@@ -168,12 +165,22 @@ public class ChatTableService {
                 log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
 
                 log.info("table id " + id + " is deleted!");
-                template.convertAndSend("sub/chat/room/" + id, HttpStatus.OK);
+                template.convertAndSend("sub/chat/room/" + id, "HI");
             }
         }
     }
 
-//    public void perfectTrashBin(Long tableId) {
-//
-//    }
+    public void destroy(Long id) {
+        ChatTable table = chatTableRepository.findOne(id);
+        User user = table.getUser();
+        PrivateChatRoom privateChatRoom = table.getPrivateChatRoom();
+        user.setMaster(false);
+        privateChatRoomRepository.delete(privateChatRoom);
+    }
+
+    public void leave(String intraId) {
+        User user = userRepository.findByName(intraId);
+        ChatTable table = user.getChatTables().get(0);
+        chatTableRepository.delete(table);
+    }
 }
