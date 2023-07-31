@@ -62,10 +62,12 @@ public class ChatTableService {
         List<ChatTable> chatTables = chatTableRepository.findAll();
 
         for (ChatTable table : chatTables) {
-            PrivateChatRoom privateChatRoom = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
-            PrivateRoomInfo privateRoomInfo = new PrivateRoomInfo(table.getId(), privateChatRoom.getRoomName(),
-                    table.getHost(), privateChatRoom.getCreateTime(), privateChatRoom.getParticipantsNum());
-            result.add(privateRoomInfo);
+            if (table.getHost() != null) {
+                PrivateChatRoom privateChatRoom = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
+                PrivateRoomInfo privateRoomInfo = new PrivateRoomInfo(table.getId(), privateChatRoom.getRoomName(),
+                        table.getHost(), privateChatRoom.getCreateTime(), privateChatRoom.getParticipantsNum());
+                result.add(privateRoomInfo);
+            }
         }
         Collections.reverse(result);
         return result;
@@ -106,6 +108,7 @@ public class ChatTableService {
             }
             else {
                 tables.get(0).setPrivateChatRoom(privateChatRoom);
+//                user.getChatTables().set(0, tables.get(0));
             }
 
         }
@@ -161,11 +164,13 @@ public class ChatTableService {
             if (expirationTime != null && expirationTime.isBefore(currentTime)) {
                 log.info("expiration time is " + expirationTime);
                 PrivateChatRoom room = table.getPrivateChatRoom();
+                template.convertAndSend("sub/chat/room/" + id, "HI");
+                template.convertAndSend("sub/chat/room/" + id, HttpStatus.OK);
                 privateChatRoomRepository.delete(room);
-                log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
+//                log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
 
                 log.info("table id " + id + " is deleted!");
-                template.convertAndSend("sub/chat/room/" + id, "HI");
+
             }
         }
     }
