@@ -42,7 +42,7 @@ public class PrivateChatroomController {
     }
 
     //만들어진 방에 들어가기
-    @GetMapping("/private/{id}")
+    @GetMapping("/private/{id}") // 이쪽에서 table id가 아니라 Room id를 받아야할거같음.
     public List<UniformDTO> showOneRoomInfo(@PathVariable Long id) {
         log.info("selected room : " + id.toString());
         return chatTableService.getMessageInfo(id);
@@ -52,7 +52,7 @@ public class PrivateChatroomController {
     @PostMapping("/private/{id}/destroy")
     public void leaveRoom(@PathVariable Long id) {
 //        ChatTable room = chatTableService.findOne(id);
-        chatTableService.remove(id);
+        chatTableService.remove(id); // privateChatRoomService에서 다시 구현해야될듯 다 이어져있어서
         log.info("in leave post" + HttpStatus.OK);
         template.convertAndSend("/sub/chat/room/" + id, HttpStatus.OK);
     }

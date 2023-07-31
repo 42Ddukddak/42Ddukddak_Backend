@@ -39,7 +39,7 @@ public class UserService {
         user.setMaster(true);
         PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
         privateChatRoomRepository.save(privateChatRoom, user);
-//        if (privateChatRoom.getExpirationTime() != null) {
+//        if (privateChatRoom.getExpirationTime() != null) { // 새로운 스레드를 생성한 후 효율적으로 방을 삭제하기 위한 메소드...ㅠㅠ
 //            Duration duration = Duration.between(privateChatRoom.getCreateTime(), privateChatRoom.getExpirationTime());
 //            long delayInMillis = duration.toMillis();
 //
@@ -48,7 +48,7 @@ public class UserService {
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);
         chatTable.setHost(user.getIntraId());
         chatTableRepository.save(chatTable);
-        user.getChatTables().add(chatTable);
+        user.addChatTable(chatTable);
 
         return chatTable.getId();
     }
@@ -64,4 +64,6 @@ public class UserService {
     public User findByName(String name){
         return userRepository.findByName(name);
     }
+
+
 }

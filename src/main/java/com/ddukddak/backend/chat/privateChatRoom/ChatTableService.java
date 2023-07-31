@@ -96,12 +96,15 @@ public class ChatTableService {
         List<PrivateStorage> storages = chatTable.getPrivateStorages();
         List<UniformDTO> res = new ArrayList<>();
         User user = chatTable.getUser();
-        user.getChatTables().set(0, chatTable); // 시발 어떡해 0번째 값을 계속 세팅해야대???
+        log.info("who are you : " + user.getIntraId());
+        user.addChatTable(chatTable); // List에 add, id 따로 저장하도록 합쳤습니다.
 
         for(PrivateStorage storage : storages) {
             res.add(new UniformDTO(storage.getIntraId(), storage.getContents(),
                     restTime(privateChatRoom.getCreateTime()), person));
         }
+        //여기에서 새로운 chatTable을 저장하는 로직이 필요함.. 들어온 user 정보와 함께
+
         return res;
     }
 

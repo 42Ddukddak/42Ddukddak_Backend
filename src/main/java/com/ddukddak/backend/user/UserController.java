@@ -1,6 +1,7 @@
 package com.ddukddak.backend.user;
 
 import com.ddukddak.backend.chat.dto.UniformDTO;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import com.ddukddak.backend.chat.privateChatRoom.ChatTableService;
 import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomService;
 import com.ddukddak.backend.reservation.Reservation;
@@ -40,6 +41,7 @@ public class UserController {
     //방 안의 모든 유저들에게 예약 확정
     @PostMapping("/api/reserved/{id}")
     public ResponseEntity reserve(@PathVariable Long id, @RequestBody UniformDTO uniformDTO) {
+        ChatTable table = chatTableService.findOne(id);
 
         return new ResponseEntity(HttpStatus.OK);
     }

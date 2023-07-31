@@ -42,6 +42,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations = new ArrayList<>();
 
+//    @Column(name = "chat_table_id")
+//    private Long chatTableId;
+
     public User(String userName, PublicChatRoom publicChatRoom) {
         this.banned = false;
         this.intraId = userName;
@@ -78,5 +81,11 @@ public class User {
             }
         }
         return result;
+    }
+
+    public void addChatTable(ChatTable chatTable) {
+        chatTables.add(chatTable);
+        this.chatTableId = chatTable.getId();
+        chatTable.setUser(this);
     }
 }
