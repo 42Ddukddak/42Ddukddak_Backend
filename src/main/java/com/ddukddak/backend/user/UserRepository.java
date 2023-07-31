@@ -36,4 +36,10 @@ public class UserRepository {
                 .setParameter("userName", userName)
                 .getSingleResult();
     }
+
+    public List<User> findByRoomId(Long privateChatRoomId) {
+        return em.createQuery("select u from User u where u.privateChatRoomId = :privateChatRoomId", User.class)
+                .setParameter("privateChatRoomId", privateChatRoomId)
+                .getResultList();
+    }
 }

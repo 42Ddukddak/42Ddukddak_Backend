@@ -26,9 +26,6 @@ public class ChatTable {
     @JoinColumn(name = "private_chat_room_id")
     private PrivateChatRoom privateChatRoom;
 
-    @OneToMany(mappedBy = "chatTable", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PrivateStorage> privateStorages = new ArrayList<>();
-
     private String host;
     
     public static ChatTable createChatTable(User user, PrivateChatRoom privateChatRoom){
@@ -37,10 +34,6 @@ public class ChatTable {
        chatTable.setPrivateChatRoom(privateChatRoom);
 
        return chatTable;
-    }
-
-    public void addPrivateStorages(PrivateStorage privateStorage) {
-        privateStorages.add(privateStorage);
     }
 
 }

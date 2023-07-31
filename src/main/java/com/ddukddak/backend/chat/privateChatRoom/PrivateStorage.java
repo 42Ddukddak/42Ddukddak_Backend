@@ -20,21 +20,18 @@ public class PrivateStorage {
 
     private String intraId;
 
-    private Long roomId;
-
     private String roomName;
 
     private LocalDateTime sendTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_table_id")
-    private ChatTable chatTable;
+    @JoinColumn(name = "private_chat_room_id")
+    private PrivateChatRoom privateChatRoom;
 
-    public PrivateStorage(String sender, String message, ChatTable chatTable) {
+    public PrivateStorage(String sender, String message, PrivateChatRoom privateChatRoom) {
         this.intraId = sender;
         this.contents = message;
-        this.roomId = chatTable.getPrivateChatRoom().getId();
         this.sendTime = LocalDateTime.now();
-        this.chatTable = chatTable;
+        this.privateChatRoom = privateChatRoom;
     }
 }

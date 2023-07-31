@@ -16,8 +16,6 @@ public class PublicChatRoom {
     @Column(name = "public_room_id")
     private Long id;
 
-    private String publicContents;
-
     @OneToMany(mappedBy = "publicChatRoom")
     private List<User> users = new ArrayList<>();
 

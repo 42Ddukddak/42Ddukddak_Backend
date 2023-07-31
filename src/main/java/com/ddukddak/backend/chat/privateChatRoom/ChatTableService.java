@@ -9,7 +9,6 @@ import com.ddukddak.backend.utils.Define;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,17 +38,21 @@ public class ChatTableService {
         return chatTable.getId();
     }
 
-    public void create(User user, PrivateChatRoom privateChatRoom) {
+    @Transactional
+    public ChatTable createTable(String intraId, PrivateChatRoom privateChatRoom) {
+        User user = userRepository.findByName(intraId);
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);
-        user = userRepository.findOne(user.getId());
-
+        user.getChatTables().add(chatTable);
+        chatTableRepository.save(chatTable);
+        return chatTable;
     }
 
     @Transactional
     public Long saveContents(String sender, String message, Long roomId) {
         ChatTable chatTable = chatTableRepository.findOne(roomId);
-        PrivateStorage privateStorage = new PrivateStorage(sender, message, chatTable);
-        chatTable.addPrivateStorages(privateStorage);
+        PrivateChatRoom chatRoom = privateChatRoomRepository.findOne(chatTable.getPrivateChatRoom().getId());
+        PrivateStorage privateStorage = new PrivateStorage(sender, message, chatRoom);
+        chatRoom.addPrivateStorages(privateStorage);
 
         return chatTable.getId();
     }
@@ -78,7 +81,8 @@ public class ChatTableService {
     
     public List<PrivateMessage> findMessageInfo(Long tableId){
         ChatTable chatTable = chatTableRepository.findOne(tableId);
-        List<PrivateStorage> storages = chatTable.getPrivateStorages();
+        PrivateChatRoom chatRoom = chatTable.getPrivateChatRoom();
+        List<PrivateStorage> storages = chatRoom.getPrivateStorages();
         List<PrivateMessage> result = new ArrayList<>();
         User user = chatTable.getUser();
         user.getChatTables().add(chatTable);
@@ -89,29 +93,33 @@ public class ChatTableService {
         return result;
     }
 
-    public List<UniformDTO> getMessageInfo(Long tableId) {
+    public List<UniformDTO> getMessageInfo(Long tableId, String intraId) {
         person++;
-        ChatTable chatTable = chatTableRepository.findOne(tableId);
-        PrivateChatRoom privateChatRoom = chatTable.getPrivateChatRoom();
-        List<PrivateStorage> storages = chatTable.getPrivateStorages();
+        User user = userRepository.findByName(intraId);
+        PrivateChatRoom privateChatRoom = chatTableRepository.findOne(tableId).getPrivateChatRoom();
+        if (!user.isMaster()) {
+            ChatTable chatTable = chatTableRepository.findByName(intraId);
+            if (chatTable != null) {
+                chatTable.setPrivateChatRoom(privateChatRoom);
+            }
+            else {
+                createTable(intraId, privateChatRoom);
+            }
+        }
+        List<PrivateStorage> storages = privateChatRoom.getPrivateStorages();
         List<UniformDTO> res = new ArrayList<>();
-        User user = chatTable.getUser();
-        log.info("who are you : " + user.getIntraId());
-        user.addChatTable(chatTable); // List에 add, id 따로 저장하도록 합쳤습니다.
+        log.info("who are you : " + intraId);
 
         for(PrivateStorage storage : storages) {
             res.add(new UniformDTO(storage.getIntraId(), storage.getContents(),
                     restTime(privateChatRoom.getCreateTime()), person));
         }
-        //여기에서 새로운 chatTable을 저장하는 로직이 필요함.. 들어온 user 정보와 함께
-
         return res;
     }
 
     public void remove(Long tableId) {
         ChatTable table = chatTableRepository.findOne(tableId);
         PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
-        table.getUser().getChatTables().remove(0);
 
         em.remove(room);
     }
@@ -129,6 +137,19 @@ public class ChatTableService {
         return uniformDTO;
     }
 
+    public List<User> findUsersInRoom(Long roomId) {
+        List<User> users = new ArrayList<>();
+        List<ChatTable> tables = chatTableRepository.findAll();
+
+        for (ChatTable table : tables) {
+            if (table.getPrivateChatRoom().getId().equals(roomId)) {
+                log.info("user name ??????" + table.getUser().getIntraId());
+                users.add(table.getUser());
+            }
+        }
+        return users;
+    }
+
 
     @Scheduled(fixedRate = 30000) //30초
     public void checkExpiredChatRooms() {
@@ -142,7 +163,7 @@ public class ChatTableService {
             log.info("after.... : " + expirationTime);
             if (expirationTime != null && expirationTime.isBefore(currentTime)) {
                 log.info("expiration time is " + expirationTime);
-                PrivateChatRoom room = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
+                PrivateChatRoom room = table.getPrivateChatRoom();
                 privateChatRoomRepository.delete(room);
                 log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
 

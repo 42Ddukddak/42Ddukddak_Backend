@@ -1,5 +1,6 @@
 package com.ddukddak.backend.chat.privateChatRoom;
 
+import com.ddukddak.backend.api.entity.Token;
 import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,11 @@ public class ChatTableRepository {
 
     public void delete(ChatTable chatTable) {
         em.remove(chatTable);
+    }
+
+    public ChatTable findByName(String intraId) {
+        return em.createQuery("select m from ChatTable m where m.user.intraId = :intraId", ChatTable.class)
+                .setParameter("intraId", intraId)
+                .getSingleResult();
     }
 }

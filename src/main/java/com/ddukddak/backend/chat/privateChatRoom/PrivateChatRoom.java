@@ -30,12 +30,19 @@ public class PrivateChatRoom {
     @OneToMany(mappedBy = "privateChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatTable> chatTables = new ArrayList<>();
 
+    @OneToMany(mappedBy = "privateChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PrivateStorage> privateStorages = new ArrayList<>();
+
     public PrivateChatRoom(String name){
         this.roomName = name;
         this.createTime = LocalDateTime.now();
         this.participantsNum = 1;
-        this.expirationTime = createTime.plusMinutes(15);
+        this.expirationTime = createTime.plusMinutes(3);
 //        this.expirationTime = createTime.plusSeconds(30);
+    }
+
+    public void addPrivateStorages(PrivateStorage privateStorage) {
+        privateStorages.add(privateStorage);
     }
 
 }

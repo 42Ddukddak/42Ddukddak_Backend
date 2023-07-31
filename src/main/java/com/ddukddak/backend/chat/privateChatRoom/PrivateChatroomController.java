@@ -3,6 +3,7 @@ package com.ddukddak.backend.chat.privateChatRoom;
 import com.ddukddak.backend.chat.dto.PrivateMessage;
 import com.ddukddak.backend.chat.dto.PrivateRoomInfo;
 import com.ddukddak.backend.chat.dto.UniformDTO;
+import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,17 +43,16 @@ public class PrivateChatroomController {
     }
 
     //만들어진 방에 들어가기
-    @GetMapping("/private/{id}") // 이쪽에서 table id가 아니라 Room id를 받아야할거같음.
-    public List<UniformDTO> showOneRoomInfo(@PathVariable Long id) {
-        log.info("selected room : " + id.toString());
-        return chatTableService.getMessageInfo(id);
+    @GetMapping("/private/{id}")
+    public List<UniformDTO> showOneRoomInfo(@PathVariable Long id, @CookieValue(name = "intraId") String intraId) {
+        log.info("미친놈 selected room : " + id.toString());
+        return chatTableService.getMessageInfo(id, intraId);
     }
 
     //방장의 방 삭제하기
     @PostMapping("/private/{id}/destroy")
     public void leaveRoom(@PathVariable Long id) {
-//        ChatTable room = chatTableService.findOne(id);
-        chatTableService.remove(id); // privateChatRoomService에서 다시 구현해야될듯 다 이어져있어서
+        chatTableService.remove(id);
         log.info("in leave post" + HttpStatus.OK);
         template.convertAndSend("/sub/chat/room/" + id, HttpStatus.OK);
     }
