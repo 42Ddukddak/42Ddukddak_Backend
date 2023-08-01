@@ -161,18 +161,22 @@ public class ChatTableService {
         for (ChatTable table : tables) {
             Long id = table.getId();
             LocalDateTime expirationTime = table.getPrivateChatRoom().getExpirationTime();
-            log.info("after.... : " + expirationTime);
-            if (expirationTime != null && expirationTime.isBefore(currentTime) && table.getHost() != null) {
-                log.info("expiration time is " + expirationTime);
-                PrivateChatRoom room = table.getPrivateChatRoom();
-//                template.convertAndSend("/sub/chat/room/delete", id);
-                template.convertAndSend("/sub/chat/room/" + id, HttpStatus.OK);
-                log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
-                log.info("table id " + id + " is deleted!");
-                privateChatRoomRepository.delete(room);
+            if (expirationTime != null && table.getHost() != null) {
+                if (expirationTime.isBefore(currentTime.plusMinutes(3))) {
+                    log.info("will time ?" + currentTime.plusMinutes(3));
+                    template.convertAndSend("/sub/chat/room/" + id, HttpStatus.LOCKED);
+                }
 
-
+                else if (expirationTime.isBefore(currentTime)) {
+                    log.info("expiration time is " + expirationTime);
+                    PrivateChatRoom room = table.getPrivateChatRoom();
+                    template.convertAndSend("/sub/chat/room/" + id, HttpStatus.OK);
+                    log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
+                    log.info("table id " + id + " is deleted!");
+                    privateChatRoomRepository.delete(room);
+                }
             }
+
         }
     }
 
