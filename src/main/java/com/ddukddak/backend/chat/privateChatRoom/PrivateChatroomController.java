@@ -36,7 +36,6 @@ public class PrivateChatroomController {
     //새로운 방 만들기
     @PostMapping("/ddukddak")
     public PrivateRoomInfo createDdukddak(@RequestBody PrivateRoomInfo message) throws Exception{
-        log.info("POST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + message.getLogin());
         Long tableId = userService.createPrivateChatRoom(message.getLogin(), message.getRoomName());
         return new PrivateRoomInfo(tableId, message.getRoomName(), message.getLogin(), 15L,1);
     }

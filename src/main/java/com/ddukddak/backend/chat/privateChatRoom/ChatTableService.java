@@ -10,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class ChatTableService {
         ChatTable chatTable = ChatTable.createChatTable(user, privateChatRoom);
         user.getChatTables().add(chatTable);
         chatTableRepository.save(chatTable);
-        log.info("null, name : " + chatTable.getPrivateChatRoom().getRoomName());
+        log.info("name : " + chatTable.getPrivateChatRoom().getRoomName());
         return chatTable;
     }
 
@@ -161,15 +162,15 @@ public class ChatTableService {
             Long id = table.getId();
             LocalDateTime expirationTime = table.getPrivateChatRoom().getExpirationTime();
             log.info("after.... : " + expirationTime);
-            if (expirationTime != null && expirationTime.isBefore(currentTime)) {
+            if (expirationTime != null && expirationTime.isBefore(currentTime) && table.getHost() != null) {
                 log.info("expiration time is " + expirationTime);
                 PrivateChatRoom room = table.getPrivateChatRoom();
-                template.convertAndSend("sub/chat/room/" + id, "HI");
-                template.convertAndSend("sub/chat/room/" + id, HttpStatus.OK);
-                privateChatRoomRepository.delete(room);
-//                log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
-
+//                template.convertAndSend("/sub/chat/room/delete", id);
+                template.convertAndSend("/sub/chat/room/" + id, HttpStatus.OK);
+                log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
                 log.info("table id " + id + " is deleted!");
+                privateChatRoomRepository.delete(room);
+
 
             }
         }

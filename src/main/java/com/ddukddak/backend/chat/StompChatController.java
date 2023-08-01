@@ -8,9 +8,11 @@ import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoomService;
 import com.ddukddak.backend.utils.Define;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
@@ -47,9 +49,6 @@ public class StompChatController {
         template.convertAndSend("/sub/chat/public/" + Define.PUBLIC_CHAT_ROOM_ID, message);
     }
 
-    /*
-    * sender, roomid, message -> 8개 정형화 해서 보내기...
-    * */
     @MessageMapping(value = "chat/message/private")
     public void UniformDTO(@RequestBody ChatMessageDTO message) {
         log.info("i'm in private msg.... : " + message.getMessage());
@@ -59,8 +58,10 @@ public class StompChatController {
         chatTableService.saveContents(message.getSender(), message.getMessage(), message.getRoomId());
         ChatTable table = chatTableService.findOne(message.getRoomId());
         UniformDTO res = chatTableService.create(table.getPrivateChatRoom().getId(), message.getSender(), message.getMessage(), 5);
+        log.info("sending table id ? :" + message.getRoomId());
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), res);
     }
+
 
 }
 
