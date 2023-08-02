@@ -27,4 +27,8 @@ public class ReservationRepository {
                 .setParameter("id", user.getId())
                 .getResultList();
     }
+
+    public void delete(Reservation reservation){
+        em.remove(reservation);
+    }
 }

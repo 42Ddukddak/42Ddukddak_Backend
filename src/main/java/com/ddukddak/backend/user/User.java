@@ -73,15 +73,15 @@ public class User {
         return count;
     }
 
-    public List<String> getReservationRoomName() {
-        List<String> result = new ArrayList<>();
-        for (Reservation reserved : reservations){
-            if (reserved.getStatus() == ReservationStatus.RESERVE) {
-                result.add(reserved.getChatRoomName());
-            }
-        }
-        return result;
-    }
+//    public List<String> getReservationRoomName() {
+//        List<String> result = new ArrayList<>();
+//        for (Reservation reserved : reservations){
+//            if (reserved.getStatus() == ReservationStatus.RESERVE) {
+//                result.add(reserved.getChatRoomName());
+//            }
+//        }
+//        return result;
+//    }
 
     public void addChatTable(ChatTable chatTable) {
         chatTables.add(chatTable);

@@ -29,21 +29,14 @@ public class UserController {
 
     @GetMapping("/chat-list")
     @ResponseBody
-    public ResponseEntity chatList(Long userId){
-        User user = userService.findOne(userId);
-        List<Reservation> reservations = user.getReservations();
-        List<ReservationDTO> result = new ArrayList<>();
-        for (Reservation r : reservations){
-            if (r.getStatus() == ReservationStatus.RESERVE) {
-                result.add(new ReservationDTO(r.getChatRoomName(), r.getReservationTime()));
-            }
-        }
+    public ResponseEntity chatList(@CookieValue(name = "intraId") String intraId){
+        List<ReservationDTO> result = reservationService.reservationList(intraId);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
     //방 안의 모든 유저들에게 예약 확정
     @PostMapping("/reserved/{id}")
-    public ResponseEntity reserve(@PathVariable Long id, @RequestBody UniformDTO uniformDTO) {
+    public ResponseEntity reserve(@PathVariable Long id) {
 //        ChatTable table = chatTableService.findOne(id);
 //        PrivateChatRoom privateChatRoom = table.getPrivateChatRoom();
 //        List<User> users = chatTableService.findUsersInRoom(privateChatRoom.getId());
@@ -52,6 +45,11 @@ public class UserController {
 //        }
 
         reservationService.reservation(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    @PostMapping("/reserved/cancel/{id}")
+    public ResponseEntity cancelReservation(@PathVariable Long id){
+        reservationService.cancelReservation(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

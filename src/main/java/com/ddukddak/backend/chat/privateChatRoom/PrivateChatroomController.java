@@ -5,6 +5,7 @@ import com.ddukddak.backend.chat.dto.PrivateRoomInfo;
 import com.ddukddak.backend.chat.dto.UniformDTO;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserService;
+import com.ddukddak.backend.utils.HttpCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,13 +30,13 @@ public class PrivateChatroomController {
 
     @GetMapping("/roomList")
     public List<PrivateRoomInfo> showRoomList() {
-
         return tableService.getAllRoomInfo();
     }
 
     //새로운 방 만들기
     @PostMapping("/ddukddak")
     public PrivateRoomInfo createDdukddak(@RequestBody PrivateRoomInfo message) throws Exception{
+        log.info("POST!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + message.getLogin());
         Long tableId = userService.createPrivateChatRoom(message.getLogin(), message.getRoomName());
         return new PrivateRoomInfo(tableId, message.getRoomName(), message.getLogin(), 15L,1);
     }

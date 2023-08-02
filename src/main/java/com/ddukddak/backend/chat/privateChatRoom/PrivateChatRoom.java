@@ -37,7 +37,7 @@ public class PrivateChatRoom {
         this.roomName = name;
         this.createTime = LocalDateTime.now();
         this.participantsNum = 1;
-        this.expirationTime = createTime.plusMinutes(3);
+        this.expirationTime = createTime.plusMinutes(2);
 //        this.expirationTime = createTime.plusSeconds(30);
     }
 

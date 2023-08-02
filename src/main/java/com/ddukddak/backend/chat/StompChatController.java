@@ -4,11 +4,12 @@ import com.ddukddak.backend.chat.dto.ChatMessageDTO;
 import com.ddukddak.backend.chat.dto.UniformDTO;
 import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import com.ddukddak.backend.chat.privateChatRoom.ChatTableService;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomService;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoomService;
 import com.ddukddak.backend.utils.Define;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ public class StompChatController {
     private final SimpMessagingTemplate template;
     private final PublicChatRoomService publicChatRoomService;
     private final ChatTableService chatTableService;
-
+    private final PrivateChatRoomService privateChatRoomService;
     @MessageMapping(value = "/chat/enter")
     public void enter(ChatMessageDTO message) {
         message.setMessage(message.getLogin() + " 님이 입장 하셨습니다");
@@ -49,7 +50,10 @@ public class StompChatController {
         template.convertAndSend("/sub/chat/public/" + Define.PUBLIC_CHAT_ROOM_ID, message);
     }
 
-    @MessageMapping(value = "chat/message/private")
+    /*
+    * sender, roomid, message -> 8개 정형화 해서 보내기...
+    * */
+    @MessageMapping(value = "/chat/message/private")
     public void UniformDTO(@RequestBody ChatMessageDTO message) {
         log.info("i'm in private msg.... : " + message.getMessage());
         log.info("sender is..." + message.getSender());
@@ -57,11 +61,9 @@ public class StompChatController {
         //한번에 너무 많은 길이 validation 필요~
         chatTableService.saveContents(message.getSender(), message.getMessage(), message.getRoomId());
         ChatTable table = chatTableService.findOne(message.getRoomId());
-        UniformDTO res = chatTableService.create(table.getPrivateChatRoom().getId(), message.getSender(), message.getMessage(), 5);
-        log.info("sending table id ? :" + message.getRoomId());
+        PrivateChatRoom privateChatRoom = privateChatRoomService.findOne(table.getPrivateChatRoom().getId());
+        UniformDTO res = chatTableService.create(table.getPrivateChatRoom().getId(), message.getSender(), message.getMessage(), privateChatRoom.getParticipantsNum());
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), res);
     }
-
-
 }
 
