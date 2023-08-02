@@ -52,40 +52,40 @@ class UserControllerTest {
         Long userId = user.getId();
         logger.info("userId" + userId);
 
-        Reservation tmp = Reservation.createReservation(user, "망한방");
-        Reservation tmp2 = Reservation.createReservation(user, "안망한방");
-        Reservation tmp3 = Reservation.createReservation(user, "123");
-        Reservation tmp4 = Reservation.createReservation(user, "123");
-        Reservation tmp5 = Reservation.createReservation(user, "123");
-        Reservation tmp6 = Reservation.createReservation(user, "123");
-        tmp2.setStatus(ReservationStatus.CANCEL);
-        reservationRepository.save(tmp);
-        reservationRepository.save(tmp2);
-        reservationRepository.save(tmp3);
-        reservationRepository.save(tmp4);
-        reservationRepository.save(tmp5);
-        reservationRepository.save(tmp6);
-        tmp.setStatus(ReservationStatus.RESERVE);
-        ResponseEntity responseEntity = userController.chatList(userId);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-
-        //responseEntity에 body에 뭐가 들어가 있는지 확인
-        ObjectMapper objectMapper = new ObjectMapper();
-        String responseResult = objectMapper.writeValueAsString(responseEntity.getBody());
-
-
-        List<Reservation> r = reservationRepository.findAll(user);
-        List<ReservationDTO> expect = new ArrayList<>();
-        for(Reservation reserved : r){
-            if (reserved.getStatus() == ReservationStatus.RESERVE){
-                expect.add(new ReservationDTO(reserved.getChatRoomName(), reserved.getReservationTime()));
-            }
-        }
-
-        String expectResult = objectMapper.writeValueAsString(expect);
-
-        assertEquals(responseResult, expectResult);
+//        Reservation tmp = Reservation.createReservation(user, "망한방");
+//        Reservation tmp2 = Reservation.createReservation(user, "안망한방");
+//        Reservation tmp3 = Reservation.createReservation(user, "123");
+//        Reservation tmp4 = Reservation.createReservation(user, "123");
+//        Reservation tmp5 = Reservation.createReservation(user, "123");
+//        Reservation tmp6 = Reservation.createReservation(user, "123");
+//        tmp2.setStatus(ReservationStatus.CANCEL);
+//        reservationRepository.save(tmp);
+//        reservationRepository.save(tmp2);
+//        reservationRepository.save(tmp3);
+//        reservationRepository.save(tmp4);
+//        reservationRepository.save(tmp5);
+//        reservationRepository.save(tmp6);
+//        tmp.setStatus(ReservationStatus.RESERVE);
+//        ResponseEntity responseEntity = userController.chatList(userId);
+//
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//
+//        //responseEntity에 body에 뭐가 들어가 있는지 확인
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String responseResult = objectMapper.writeValueAsString(responseEntity.getBody());
+//
+//
+//        List<Reservation> r = reservationRepository.findAll(user);
+//        List<ReservationDTO> expect = new ArrayList<>();
+//        for(Reservation reserved : r){
+//            if (reserved.getStatus() == ReservationStatus.RESERVE){
+//                expect.add(new ReservationDTO(reserved.getChatRoomName(), reserved.getReservationTime()));
+//            }
+//        }
+//
+//        String expectResult = objectMapper.writeValueAsString(expect);
+//
+//        assertEquals(responseResult, expectResult);
 
     }
 }

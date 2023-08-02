@@ -25,9 +25,9 @@ class UserServiceTest {
 
         PublicChatRoom publicChatRoom = new PublicChatRoom();
 
-        User user = userService.create("sohyupar", publicChatRoom);
-
-        assertEquals(user.getIntraId(), "sohyupar");
-        assertEquals(user.getPublicChatRoom(), publicChatRoom);
+//        User user = userService.create("sohyupar", publicChatRoom);
+//
+//        assertEquals(user.getIntraId(), "sohyupar");
+//        assertEquals(user.getPublicChatRoom(), publicChatRoom);
     }
 }

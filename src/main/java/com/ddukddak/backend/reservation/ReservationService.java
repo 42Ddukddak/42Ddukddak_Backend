@@ -58,7 +58,8 @@ public class ReservationService {
         for (Reservation userReservation : reservations){
             if (userReservation.getStatus() == ReservationStatus.RESERVE) {
                 PrivateChatRoom privateChatRoom = privateChatRoomRepository.findOne(userReservation.getPrivate_chat_room_id());
-                result.add(new ReservationDTO(userReservation.getChatRoomName(), userReservation.getReservationTime(), privateChatRoom));
+                result.add(new ReservationDTO(userReservation.getChatRoomName(), userReservation.getReservationTime(),
+                        privateChatRoom.getPrivateStorages()));
             }
         }
         return result;

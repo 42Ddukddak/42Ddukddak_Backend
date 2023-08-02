@@ -3,6 +3,9 @@ package com.ddukddak.backend.chat.privateChatRoom;
 import com.ddukddak.backend.chat.dto.PrivateMessage;
 import com.ddukddak.backend.chat.dto.PrivateRoomInfo;
 import com.ddukddak.backend.chat.dto.UniformDTO;
+import com.ddukddak.backend.reservation.Enum.ReservationStatus;
+import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.reservation.ReservationRepository;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserRepository;
 import com.ddukddak.backend.utils.Define;
@@ -31,6 +34,7 @@ public class ChatTableService {
     private final UserRepository userRepository;
     private final PrivateChatRoomRepository privateChatRoomRepository;
     private final SimpMessagingTemplate template;
+    private final ReservationRepository reservationRepository;
     private int person;
 
     @Transactional
@@ -178,6 +182,18 @@ public class ChatTableService {
                     PrivateChatRoom room = table.getPrivateChatRoom();
                     User user = table.getUser();
                     user.setMaster(false);
+                    List<Reservation> reservations = user.getReservations();
+
+                    // 만약 내가 예약한 내역이 있다면, privateRoom이 폭 파 되었기에 List 에서 reservation 지워주고, entity 삭제
+                    if (reservations.size() > 0) {
+                        for (Reservation reservation : reservations) {
+                            if (reservation.getStatus() == ReservationStatus.RESERVE &&
+                                    reservation.getPrivate_chat_room_id().equals(room.getId())) {
+                                reservations.remove(reservation);
+                                reservationRepository.delete(reservation);
+                            }
+                        }
+                    }
                     privateChatRoomRepository.delete(room);
                     log.info("private_room " + room.getRoomName() + " 방을 지웠습니다!");
 

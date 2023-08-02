@@ -28,7 +28,6 @@ public class UserController {
     private final ReservationService reservationService;
 
     @GetMapping("/chat-list")
-    @ResponseBody
     public ResponseEntity chatList(@CookieValue(name = "intraId") String intraId){
         List<ReservationDTO> result = reservationService.reservationList(intraId);
         return new ResponseEntity(result, HttpStatus.OK);

@@ -13,10 +13,10 @@ public class ReservationDTO {
 
     private String roomName;
     private String reservedTime;
-    private List<PrivateStorage> privateStorage;
-    public ReservationDTO(String roomName, LocalDateTime reservedTime, PrivateChatRoom privateChatRoom){
+    private List<PrivateStorage> privateStorages;
+    public ReservationDTO(String roomName, LocalDateTime reservedTime, List<PrivateStorage> privateStorages){
         this.roomName = roomName;
         this.reservedTime = reservedTime.format(DateTimeFormatter.BASIC_ISO_DATE);
-        this.privateStorage = privateChatRoom.getPrivateStorages();
+        this.privateStorages = privateStorages;
     }
 }

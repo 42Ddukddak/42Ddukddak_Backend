@@ -25,7 +25,7 @@ class PublicChatRoomRepositoryTest {
     public void setup() {
         PublicChatRoom publicChatRoom = new PublicChatRoom();
         publicChatRoom.setId(Define.PUBLIC_CHAT_ROOM_ID);
-        publicChatRoom.setPublicContents("Public chat room~");
+//        publicChatRoom.setPublicContents("Public chat room~");
 
         Storage storage = new Storage();
 
