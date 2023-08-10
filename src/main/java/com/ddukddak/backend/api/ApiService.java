@@ -29,28 +29,30 @@ public class ApiService {
     MultiValueMap<String, String> params;
     ResponseEntity<String> res;
 
-    public OauthToken getOauthToken(String code){
+    public OauthToken getOauthToken(String code) {
         req = req42TokenHeader(code);
         res = resPostApi(req, req42TokenUri());
         return readOauthToken(res.getBody());
     }
-    public User42Info get42SeoulInfo(String token){
+
+    public User42Info get42SeoulInfo(String token) {
         req = req42ApiHeader(token);
         res = resGetApi(req, req42UserUri());
         return readUser42Info(res.getBody());
     }
-    public HttpEntity<MultiValueMap<String, String>> req42TokenHeader(String code){
-       headers = new HttpHeaders();
-       params = new LinkedMultiValueMap<>();
-       headers.set("Content-type", "Application/x-www-form-urlencoded;charset=utf-8");
 
-       params.add("grant_type", "authorization_code");
-       params.add("client_id", "u-s4t2ud-3b57ef43b210f8fbf7a0029fa629f976bd0a1506976d74b843eab9f4bafa2727");
-       params.add("client_secret", "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");
-       params.add("code", code);
-       params.add("redirect_uri", "http://localhost/auth/callback");
+    public HttpEntity<MultiValueMap<String, String>> req42TokenHeader(String code) {
+        headers = new HttpHeaders();
+        params = new LinkedMultiValueMap<>();
+        headers.set("Content-type", "Application/x-www-form-urlencoded;charset=utf-8");
 
-       return new HttpEntity<>(params, headers);
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", "u-s4t2ud-3b57ef43b210f8fbf7a0029fa629f976bd0a1506976d74b843eab9f4bafa2727");
+        params.add("client_secret", "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");
+        params.add("code", code);
+        params.add("redirect_uri", "http://52.78.56.64/auth/callback");
+
+        return new HttpEntity<>(params, headers);
     }
 
     public HttpEntity<MultiValueMap<String, String>> req42ApiHeader(String token) {
@@ -61,29 +63,33 @@ public class ApiService {
         return new HttpEntity<>(params, headers);
     }
 
-    public ResponseEntity<String> resPostApi(HttpEntity<MultiValueMap<String, String>> req, URI uri){
+    public ResponseEntity<String> resPostApi(HttpEntity<MultiValueMap<String, String>> req, URI uri) {
         return rt.exchange(uri.toString(),
                 HttpMethod.POST,
                 req,
                 String.class);
     }
-    public ResponseEntity<String> resGetApi(HttpEntity<MultiValueMap<String, String>> req, URI uri){
+
+    public ResponseEntity<String> resGetApi(HttpEntity<MultiValueMap<String, String>> req, URI uri) {
         return rt.exchange(uri.toString(),
                 HttpMethod.GET,
                 req,
                 String.class);
     }
-    public URI req42TokenUri(){
+
+    public URI req42TokenUri() {
         return UriComponentsBuilder.fromHttpUrl("https://api.intra.42.fr/oauth/token")
                 .build()
                 .toUri();
     }
-    public URI req42UserUri(){
+
+    public URI req42UserUri() {
         return UriComponentsBuilder.newInstance().scheme("https://api.intra.42.fr").path("/v2/me")
                 .build()
                 .toUri();
     }
-    public OauthToken readOauthToken(String body){
+
+    public OauthToken readOauthToken(String body) {
         OauthToken oauthToken = null;
         try {
             oauthToken = om.readValue(body, OauthToken.class);
@@ -93,9 +99,9 @@ public class ApiService {
         return oauthToken;
     }
 
-    public User42Info readUser42Info(String body){
+    public User42Info readUser42Info(String body) {
         User42Info user42Info = null;
-        try{
+        try {
             user42Info = om.readValue(body, User42Info.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
