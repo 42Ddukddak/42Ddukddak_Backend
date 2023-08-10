@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
   remainingTime: number;
   participantsNum: number;
 * */
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class UniformDTO {
 
@@ -33,6 +34,17 @@ public class UniformDTO {
         this.participantsNum = people;
     }
 
+    public static UniformDTO create(String sender, String message, LocalDateTime time,
+                                    Long remainingTime, int participantsNum) {
+        UniformDTO uniformDTO = new UniformDTO();
+        uniformDTO.setSender(sender);
+        uniformDTO.setMessage(message);
+        uniformDTO.setTime(time);
+        uniformDTO.setRemainingTime(remainingTime);
+        uniformDTO.setParticipantsNum(participantsNum);
+
+        return uniformDTO;
+    }
 
 
 }

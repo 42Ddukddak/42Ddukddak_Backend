@@ -8,11 +8,13 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class PrivateStorage {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "private_storage_id")
     private Long id;
 
@@ -20,7 +22,7 @@ public class PrivateStorage {
 
     private String intraId;
 
-    private String roomName;
+    private Long guestId;
 
     private LocalDateTime sendTime;
 

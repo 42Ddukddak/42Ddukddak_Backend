@@ -6,13 +6,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 public class PublicChatRoom {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "public_room_id")
     private Long id;
 
@@ -30,5 +33,10 @@ public class PublicChatRoom {
     public void addStorage(Storage storage) {
         storages.add(storage);
         storage.setPublicChatRoom(this);
+    }
+
+    public void addStorage(Storage... storages) {
+        Arrays.stream(storages)
+                .forEach(this::addStorage);
     }
 }

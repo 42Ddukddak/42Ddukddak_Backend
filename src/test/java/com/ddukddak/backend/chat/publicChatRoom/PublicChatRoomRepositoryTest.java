@@ -10,34 +10,33 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
 class PublicChatRoomRepositoryTest {
 
-    @Autowired PublicChatRoomRepository chatRoom;
+    @Autowired
+    PublicChatRoomRepository chatRoom;
 
-    @Autowired EntityManager em;
+    @Autowired
+    EntityManager em;
 
     @BeforeEach
     public void setup() {
+        final Storage firstStorage = new Storage();
+        firstStorage.setIntraId("User1");
+        firstStorage.setMessage("Hi");
+
+        final Storage secondStorage = new Storage();
+        secondStorage.setIntraId("User2");
+        secondStorage.setMessage("Bye");
+
         PublicChatRoom publicChatRoom = new PublicChatRoom();
         publicChatRoom.setId(Define.PUBLIC_CHAT_ROOM_ID);
-//        publicChatRoom.setPublicContents("Public chat room~");
-
-        Storage storage = new Storage();
-
-        storage.setIntraId("User1");
-        storage.setMessage("Hi");
-        Storage storage2 = new Storage();
-
-        storage2.setIntraId("User2");
-        storage2.setMessage("Bye");
-
-        publicChatRoom.getStorages().add(storage);
-        publicChatRoom.getStorages().add(storage2);
+//        publicChatRoom.getStorages().add(firstStorage, secondStorage);
 
         chatRoom.save(publicChatRoom);
         em.persist(publicChatRoom.getStorages().get(0));
@@ -67,6 +66,7 @@ class PublicChatRoomRepositoryTest {
 
         chatRoom.save(one);
         em.flush();
+        em.clear();
 
         PublicChatRoom two = chatRoom.findOne(Define.PUBLIC_CHAT_ROOM_ID);
 

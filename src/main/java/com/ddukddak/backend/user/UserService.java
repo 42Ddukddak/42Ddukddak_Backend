@@ -1,40 +1,42 @@
 package com.ddukddak.backend.user;
 
-import com.ddukddak.backend.chat.privateChatRoom.*;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
+import com.ddukddak.backend.chat.privateChatRoom.ChatTableRepository;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoom;
+import com.ddukddak.backend.chat.privateChatRoom.PrivateChatRoomRepository;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
+import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.reservation.dto.ReservationDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.TaskScheduler;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
     private final PrivateChatRoomRepository privateChatRoomRepository;
     private final ChatTableRepository chatTableRepository;
-    private final TaskScheduler taskScheduler;
 
     public Long join(User user) {
         userRepository.save(user);
         return user.getId();
     }
 
-    public User createPublicChatRoom(String intraId, PublicChatRoom publicChatRoom){
+    public User createPublicChatRoom(String intraId, PublicChatRoom publicChatRoom) {
         User user = new User(intraId, publicChatRoom);
         userRepository.save(user);
         return user;
     }
 
-    public Long createPrivateChatRoom(String intraId, String roomName) throws Exception{
+    public Long createPrivateChatRoom(String intraId, String roomName) throws Exception {
         User user = userRepository.findByName(intraId);
         user.setMaster(true);
         PrivateChatRoom privateChatRoom = new PrivateChatRoom(roomName);
@@ -61,8 +63,18 @@ public class UserService {
         return userRepository.findOne(userId);
     }
 
-    public User findByName(String name){
+    public User findByName(String name) {
         return userRepository.findByName(name);
+    }
+
+    public List<ReservationDTO> findReservation(String name) {
+        List<Reservation> reservations = userRepository.findByName(name).getReservations();
+        List<ReservationDTO> result = new ArrayList<>();
+        for (Reservation reservation : reservations) {
+            result.add(ReservationDTO.create(reservation.getId(), reservation.getChatRoomName(),
+                    reservation.getReservationTime()));
+        }
+        return result;
     }
 
 }

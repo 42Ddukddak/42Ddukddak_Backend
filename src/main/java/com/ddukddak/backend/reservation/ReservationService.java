@@ -1,17 +1,15 @@
 package com.ddukddak.backend.reservation;
 
+import com.ddukddak.backend.chat.dto.UniformDTO;
 import com.ddukddak.backend.chat.privateChatRoom.*;
 import com.ddukddak.backend.reservation.Enum.ReservationStatus;
-import com.ddukddak.backend.reservation.dto.ReservationDTO;
 import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserService;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +23,18 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserService userService;
     private final PrivateChatRoomRepository privateChatRoomRepository;
+
     @Transactional
-    public void reservation(Long tableId) {
+    public void reservation(Long tableId, String time) {
         ChatTable table = chatTableRepository.findOne(tableId);
         PrivateChatRoom privateChatRoom = table.getPrivateChatRoom();
         privateChatRoom.setExpirationTime(privateChatRoom.getExpirationTime().plusHours(3));
+        privateChatRoom.setReserved(ReservationStatus.RESERVE);
         List<User> users = chatTableService.findUsersInRoom(privateChatRoom.getId());
         for (User user : users) {
             log.info("시 바 intra?" + user.getIntraId());
-            reservationRepository.save(Reservation.createReservation(user, privateChatRoom.getRoomName(), privateChatRoom.getId()));
+            reservationRepository.save(Reservation.createReservation(user, privateChatRoom.getRoomName(),
+                    privateChatRoom.getId(), time));
         }
     }
 
@@ -43,7 +44,7 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findOne(reservedId);
         List<Reservation> reservationList = reservation.getUser().getReservations();
         for (Reservation userReservation : reservationList) {
-            if (userReservation.equals(reservation)){
+            if (userReservation.equals(reservation)) {
                 reservationList.remove(userReservation);
                 reservationRepository.delete(userReservation);
             }
@@ -51,27 +52,25 @@ public class ReservationService {
     }
 
     @Transactional
-    public List<ReservationDTO> reservationList(String intraId){
-        User user = userService.findByName(intraId);
-        List<Reservation> reservations = user.getReservations();
-        List<ReservationDTO> result = new ArrayList<>();
-        for (Reservation userReservation : reservations){
-            if (userReservation.getStatus() == ReservationStatus.RESERVE) {
-                PrivateChatRoom privateChatRoom = privateChatRoomRepository.findOne(userReservation.getPrivate_chat_room_id());
-                result.add(new ReservationDTO(userReservation.getChatRoomName(), userReservation.getReservationTime(),
-                        privateChatRoom.getPrivateStorages()));
-            }
+    public List<UniformDTO> reservationList(Long id) {
+        Reservation reservation = reservationRepository.findOne(id);
+        PrivateChatRoom privateChatRoom = privateChatRoomRepository.findOne(reservation.getPrivate_chat_room_id());
+        List<PrivateStorage> privateStorages = privateChatRoom.getPrivateStorages();
+        List<UniformDTO> result = new ArrayList<>();
+        for (PrivateStorage privateStorage : privateStorages) {
+            result.add(UniformDTO.create(privateStorage.getIntraId(), privateStorage.getContents(),
+                    privateStorage.getSendTime(), privateChatRoom.getRestTime(), privateChatRoom.getParticipantsNum()));
         }
         return result;
     }
 
     @Transactional
-    public int reservationNumber(String intraId){
+    public int reservationNumber(String intraId) {
         User user = userService.findByName(intraId);
         List<Reservation> reservations = user.getReservations();
         int result = 0;
-        for (Reservation reservation : reservations){
-            if (reservation.getStatus() == ReservationStatus.RESERVE){
+        for (Reservation reservation : reservations) {
+            if (reservation.getStatus() == ReservationStatus.RESERVE) {
                 result += 1;
             }
         }

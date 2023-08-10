@@ -1,5 +1,7 @@
 package com.ddukddak.backend.chat.privateChatRoom;
 
+import com.ddukddak.backend.reservation.Enum.ReservationStatus;
+import com.ddukddak.backend.reservation.ReservationService;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,8 @@ public class PrivateChatRoom {
 
     private LocalDateTime expirationTime;
 
+    private ReservationStatus reserved;
+
     @OneToMany(mappedBy = "privateChatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChatTable> chatTables = new ArrayList<>();
 
@@ -38,6 +42,7 @@ public class PrivateChatRoom {
         this.createTime = LocalDateTime.now();
         this.participantsNum = 1;
         this.expirationTime = createTime.plusMinutes(2);
+        this.reserved = ReservationStatus.CANCEL;
 //        this.expirationTime = createTime.plusSeconds(30);
     }
 

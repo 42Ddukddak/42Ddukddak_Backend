@@ -1,6 +1,7 @@
 package com.ddukddak.backend.user;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,8 @@ public class UserRepository {
     }
 
     /*
-    * 기본적인 조회 로직
-    * */
+     * 기본적인 조회 로직
+     * */
     public User findOne(Long id) {
         return em.find(User.class, id);
     }
@@ -32,9 +33,13 @@ public class UserRepository {
     }
 
     public User findByName(String userName) {
-        return em.createQuery("select m from User m where m.intraId = :userName", User.class)
-                .setParameter("userName", userName)
-                .getSingleResult();
+        try {
+            return em.createQuery("select m from User m where m.intraId = :userName", User.class)
+                    .setParameter("userName", userName)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public List<User> findByRoomId(Long privateChatRoomId) {

@@ -10,10 +10,8 @@ import com.ddukddak.backend.user.User;
 import com.ddukddak.backend.user.UserRepository;
 import com.ddukddak.backend.utils.Define;
 import com.ddukddak.backend.utils.HttpCode;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +38,7 @@ public class ChatTableService {
     private int person;
 
     @Transactional
-    public Long join(ChatTable chatTable){
+    public Long join(ChatTable chatTable) {
         chatTableRepository.save(chatTable);
         return chatTable.getId();
     }
@@ -58,6 +58,8 @@ public class ChatTableService {
         ChatTable chatTable = chatTableRepository.findOne(roomId);
         PrivateChatRoom chatRoom = privateChatRoomRepository.findOne(chatTable.getPrivateChatRoom().getId());
         PrivateStorage privateStorage = new PrivateStorage(sender, message, chatRoom);
+        ChatTable userTable = userRepository.findByName(sender).getChatTables().get(0);
+        privateStorage.setGuestId(userTable.getId());
         chatRoom.addPrivateStorages(privateStorage);
 
         return chatTable.getId();
@@ -70,9 +72,11 @@ public class ChatTableService {
         for (ChatTable table : chatTables) {
             if (table.getHost() != null) {
                 PrivateChatRoom privateChatRoom = privateChatRoomRepository.findOne(table.getPrivateChatRoom().getId());
-                PrivateRoomInfo privateRoomInfo = new PrivateRoomInfo(table.getId(), privateChatRoom.getRoomName(),
-                        table.getHost(), privateChatRoom.getCreateTime(), privateChatRoom.getParticipantsNum());
-                result.add(privateRoomInfo);
+                if (privateChatRoom.getReserved().equals(ReservationStatus.CANCEL)) {
+                    PrivateRoomInfo privateRoomInfo = new PrivateRoomInfo(table.getId(), privateChatRoom.getRoomName(),
+                            table.getHost(), privateChatRoom.getCreateTime(), privateChatRoom.getParticipantsNum());
+                    result.add(privateRoomInfo);
+                }
             }
         }
         Collections.reverse(result);
@@ -83,11 +87,11 @@ public class ChatTableService {
         return Define.EXPIRE_MIN - createTime.until(LocalDateTime.now(), ChronoUnit.MINUTES);
     }
 
-    public ChatTable findOne(Long chatTableId){
+    public ChatTable findOne(Long chatTableId) {
         return chatTableRepository.findOne(chatTableId);
     }
-    
-    public List<PrivateMessage> findMessageInfo(Long tableId){
+
+    public List<PrivateMessage> findMessageInfo(Long tableId) {
         ChatTable chatTable = chatTableRepository.findOne(tableId);
         PrivateChatRoom chatRoom = chatTable.getPrivateChatRoom();
         List<PrivateStorage> storages = chatRoom.getPrivateStorages();
@@ -95,7 +99,7 @@ public class ChatTableService {
         User user = chatTable.getUser();
         user.getChatTables().add(chatTable);
 
-        for(PrivateStorage storage : storages) {
+        for (PrivateStorage storage : storages) {
             result.add(PrivateMessage.create(storage.getContents(), storage.getIntraId(), storage.getSendTime()));
         }
         return result;
@@ -106,33 +110,35 @@ public class ChatTableService {
         PrivateChatRoom privateChatRoom = chatTableRepository.findOne(tableId).getPrivateChatRoom();
         if (!user.isMaster()) {
             privateChatRoom.setParticipantsNum(privateChatRoom.getParticipantsNum() + 1);
-//            user.setPrivateChatRoomId(privateChatRoom.getId());
+            user.setPrivateChatRoomId(privateChatRoom.getId());
         }
         log.info("before privateRoom id : " + privateChatRoom.getId());
         List<ChatTable> tables = user.getChatTables();
         if (!user.isMaster()) {
             if (tables.size() == 0) {
                 createTable(intraId, privateChatRoom);
-            }
-            else {
+            } else {
                 tables.get(0).setPrivateChatRoom(privateChatRoom);
             }
-
         }
         List<PrivateStorage> storages = privateChatRoom.getPrivateStorages();
         List<UniformDTO> res = new ArrayList<>();
         log.info("who are you : " + intraId);
 
-        for(PrivateStorage storage : storages) {
+        for (PrivateStorage storage : storages) {
             res.add(new UniformDTO(storage.getIntraId(), storage.getContents(),
                     restTime(privateChatRoom.getCreateTime()), privateChatRoom.getParticipantsNum()));
         }
+        if (res.isEmpty()) {
+            res.add(new UniformDTO(null, null, null, privateChatRoom.getParticipantsNum()));
+        }
+        template.convertAndSend("/sub/chat/room" + tableId, privateChatRoom.getParticipantsNum());
         return res;
     }
 
 
     public UniformDTO create(Long roomId, String sender, String message, int people) {
-        PrivateChatRoom room =  privateChatRoomRepository.findOne(roomId);
+        PrivateChatRoom room = privateChatRoomRepository.findOne(roomId);
         UniformDTO uniformDTO = new UniformDTO();
 
         uniformDTO.setSender(sender);
@@ -175,9 +181,7 @@ public class ChatTableService {
                 if (leftMinute < 60 && leftMinute > 35) {
                     log.info("들어와줘");
                     template.convertAndSend("/sub/chat/room/" + id, HttpCode.BEFORE_DESTORY);
-                }
-                else if (expirationTime.isBefore(currentTime)) {
-                    // 뚝딱한지 3시간 뒤에 reservation 도 삭제해야하는데, 이것을 어케 처리할지가 중요하다
+                } else if (expirationTime.isBefore(currentTime)) {
                     log.info("expiration time is " + expirationTime);
                     PrivateChatRoom room = table.getPrivateChatRoom();
                     User user = table.getUser();
@@ -208,8 +212,15 @@ public class ChatTableService {
         ChatTable table = chatTableRepository.findOne(id);
         User user = table.getUser();
         PrivateChatRoom privateChatRoom = table.getPrivateChatRoom();
-        user.setMaster(false);
-        privateChatRoomRepository.delete(privateChatRoom);
+        if (privateChatRoom.getReserved() == ReservationStatus.CANCEL) {
+            user.setMaster(false);
+            privateChatRoomRepository.delete(privateChatRoom);
+        } else {
+            List<User> users = this.findUsersInRoom(privateChatRoom.getId());
+            for (User my : users) {
+                chatTableRepository.delete(my.getChatTables().get(0));
+            }
+        }
     }
 
     public void leave(String intraId) {

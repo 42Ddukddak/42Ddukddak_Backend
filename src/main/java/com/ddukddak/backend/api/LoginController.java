@@ -37,43 +37,55 @@ public class LoginController {
 
     @Operation(summary = "go login page", description = "로그인 페이지로 이동시키는 API")
     @GetMapping("api/42login")
-    public String goLogin(HttpServletRequest req) {
+    public String goLogin(HttpServletRequest req, @CookieValue(name = "intraId", required = false) String intraId) {
         httpSession = req.getSession(false);
-        if (httpSession != null)
+        if (httpSession != null) {
+            if (intraId == null) {
+                return "redirect:" + Define.REDIRECT_URI;
+            }
             return "redirect:" + Define.DOMAIN;
+        }
         return "redirect:" + Define.REDIRECT_URI;
     }
 
     @Operation(summary = "login", description = "42api와 연결해 로그인 시키는 API",
             parameters = {
-                @Parameter(name = "code", description = "42api 콜백 주소에서 제공하는 code", in = ParameterIn.QUERY)
+                    @Parameter(name = "code", description = "42api 콜백 주소에서 제공하는 code", in = ParameterIn.QUERY)
             },
             responses = {
-                @ApiResponse(responseCode = "200")
+                    @ApiResponse(responseCode = "200")
             }
     )
-    @PostMapping ("api/auth/42login")
+    @PostMapping("api/auth/42login")
     @ResponseBody
     public ResponseEntity login(HttpServletResponse res, HttpServletRequest req, @RequestParam(name = "code") String code) {
 
+        //토큰과 유저가 다 없을 경우
         OauthToken oauthToken = apiService.getOauthToken(code);
         User42Info user42Info = apiService.get42SeoulInfo(oauthToken.getAccess_token());
 
-        PublicChatRoom room = repository.findOne(1006L);
-        if (room == null) {
-            room = new PublicChatRoom();
+        User user = userService.findByName(user42Info.getLogin());
+        if (user == null) {
+//        조금 더 뭐랄까 jpa 스러운거로 바꿔야한다
+            PublicChatRoom room = repository.findOne(1006L);
+            if (room == null) {
+                room = new PublicChatRoom();
+            }
+            user = userService.createPublicChatRoom(user42Info.getLogin(), room);
+            publicChatRoomService.join(user);
+            tokenRepository.saveRefreshToken(user42Info.getLogin(), oauthToken);
+            httpSession = req.getSession();
+            httpSession.setAttribute("name", user42Info.getLogin());
+        } else if (user != null) {
+            httpSession = req.getSession(false);
+            if (httpSession == null) {
+                httpSession = req.getSession();
+                httpSession.setAttribute("name", user42Info.getLogin());
+            }
         }
-        User user = userService.createPublicChatRoom(user42Info.getLogin(), room);
-        publicChatRoomService.join(user);
-
-
-        String key = tokenRepository.saveRefreshToken(user42Info.getLogin(), oauthToken);
-        httpSession = req.getSession();
-        httpSession.setAttribute("name", user42Info.getLogin());
-
-//        Cookie cookie = new Cookie("key", key);
+        //토큰이 있든 유저가 있든, 없든 쿠기 굽자
         Cookie cookie = new Cookie("intraId", user42Info.getLogin());
-        cookie.setMaxAge(50*120);
+        cookie.setMaxAge(50 * 120);
         cookie.setPath("/");
 
         res.addCookie(cookie);

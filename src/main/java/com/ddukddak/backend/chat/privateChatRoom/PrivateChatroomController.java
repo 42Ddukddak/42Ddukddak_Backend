@@ -41,7 +41,7 @@ public class PrivateChatroomController {
         return new PrivateRoomInfo(tableId, message.getRoomName(), message.getLogin(), 15L,1);
     }
 
-    //만들어진 방에 들어가기
+    // 방에 처음 들어가면 채팅 내역 가져오기
     @GetMapping("/private/{id}")
     public List<UniformDTO> showOneRoomInfo(@PathVariable Long id, @CookieValue(name = "intraId") String intraId) {
         log.info("미친놈 selected room : " + id.toString());
@@ -63,6 +63,13 @@ public class PrivateChatroomController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    // 방에 들어왔는데, 바로 방을 변경할 경우
+    @PostMapping("/private/{roomId}/entrance")
+    public ResponseEntity enterAnotherPrivateChatRoom(@PathVariable Long roomId,
+                                                      @CookieValue(name = "intraId") String intraId) {
+        privateChatRoomService.enterAnotherPrivateChatRoom(roomId, intraId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 }
 

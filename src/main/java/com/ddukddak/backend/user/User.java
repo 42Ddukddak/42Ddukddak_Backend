@@ -2,8 +2,9 @@ package com.ddukddak.backend.user;
 
 import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import com.ddukddak.backend.chat.publicChatRoom.PublicChatRoom;
-import com.ddukddak.backend.reservation.Reservation;
+import com.ddukddak.backend.report.ReportedMessage;
 import com.ddukddak.backend.reservation.Enum.ReservationStatus;
+import com.ddukddak.backend.reservation.Reservation;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,20 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    
+
     private boolean banned;
-    
+
     @Column(name = "login")
     private String intraId;
-    
+
     private boolean master;
-    
+
     private Long reportNumber;
 
     private LocalDateTime reportTime;
@@ -44,6 +47,9 @@ public class User {
 
     @Column(name = "private_chat_room_id")
     private Long privateChatRoomId;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReportedMessage> reportedMessages = new ArrayList<>();
 
     public User(String userName, PublicChatRoom publicChatRoom) {
         this.banned = false;

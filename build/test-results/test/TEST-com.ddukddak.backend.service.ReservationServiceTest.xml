@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.ddukddak.backend.service.ReservationServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-08-05T07:14:15" hostname="suhwparkui-MacBookAir.local" time="0.019">
+  <properties/>
+  <testcase name="예약_취소_확인()" classname="com.ddukddak.backend.service.ReservationServiceTest" time="0.013"/>
+  <testcase name="예약_확인()" classname="com.ddukddak.backend.service.ReservationServiceTest" time="0.006"/>
+  <system-out><![CDATA[2023-08-05T16:14:15.851+09:00  INFO 34879 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.ddukddak.backend.service.ReservationServiceTest]: ReservationServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2023-08-05T16:14:15.855+09:00  INFO 34879 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.ddukddak.backend.BackendApplication for test class com.ddukddak.backend.service.ReservationServiceTest
+Hibernate: insert into user (banned,login,master,private_chat_room_id,public_room_id,report_number,report_time) values (?,?,?,?,?,?,?)
+Hibernate: insert into private_chat_room (create_time,expiration_time,participants_num,reserved,rest_time,room_name) values (?,?,?,?,?,?)
+Hibernate: insert into chat_table (host,private_chat_room_id,user_id) values (?,?,?)
+Hibernate: insert into user (banned,login,master,private_chat_room_id,public_room_id,report_number,report_time) values (?,?,?,?,?,?,?)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

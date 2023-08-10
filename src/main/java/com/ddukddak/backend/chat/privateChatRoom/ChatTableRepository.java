@@ -4,6 +4,7 @@ import com.ddukddak.backend.api.entity.Token;
 import com.ddukddak.backend.chat.privateChatRoom.ChatTable;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Repository
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class ChatTableRepository {
 
     private final EntityManager em;
